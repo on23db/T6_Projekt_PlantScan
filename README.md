@@ -1,29 +1,7 @@
-# PlantScan
+# PlantScan - PWA
 
-This template should help get you started developing with Vue 3 in Vite.
+Das ist ein Projekt für das T6 Modul im Studiengang Onlinemedien an der DHBW Mosbach. Die App "PlantScan" soll mithilfe einer Kamera Pflanzen erkennen und die passenden Daten ausgeben können. 
 
-## Recommended IDE Setup
+## Eine Arbeit der Gruppe:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+on23db - Denise Barg
