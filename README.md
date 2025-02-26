@@ -3,5 +3,5 @@ Dieses Projekt entsteht im Rahmen des Studiengangs Onlinemedien an der DHBW Mosb
 
 ## Projektmitglieder
 on23db - Denise Barg
-
+WON23Marie - Marie Arnold
 
