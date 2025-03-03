@@ -7,20 +7,20 @@ import Navbar from './components/Navbar.vue';
 </template>
 
 <style>
-/* Light Mode */
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #fff;
-    color: #000;
-  }
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
 }
 
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #1f1f1f;
-    color: #fff;
-  }
+[data-theme="dark"] {
+  --background-color: #222222;
+  --text-color: #ffffff;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
 }
 
 </style>
