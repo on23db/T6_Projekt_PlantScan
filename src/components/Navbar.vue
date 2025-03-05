@@ -18,7 +18,7 @@
         <button class="btn btn-primary" type="button">
           Anmelden
         </button>
-        <button class="btn" type="button">
+        <button class="btn btn-outline-primary" type="button">
           Registrieren
         </button>
       </div>
