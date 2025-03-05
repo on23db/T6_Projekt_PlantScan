@@ -5,3 +5,4 @@ Dieses Projekt entsteht im Rahmen des Studiengangs Onlinemedien an der DHBW Mosb
 on23db - Denise Barg
 WON23Marie - Marie Arnold
 ON23ZN - Zoe Neuberger
+ON23PN - Paula Neumann
