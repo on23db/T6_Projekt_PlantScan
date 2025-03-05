@@ -8,23 +8,17 @@
       </a>
       <div class="d-flex align-items-center">
         <div class="theme-switch-wrapper me-3">
-          <input
-            type="checkbox"
-            id="themeSwitch"
-            class="theme-switch"
-            @change="emitToggleTheme"
-            :checked="theme === 'dark'"
-          />
+          <input type="checkbox" id="themeSwitch" class="theme-switch" @change="emitToggleTheme" :checked="theme === 'dark'"/>
           <label for="themeSwitch">
             <span class="switch-icon">
               {{ theme === 'dark' ? '🌙' : '☀️' }}
             </span>
           </label>
         </div>
-        <button class="btn btn-primary" type="button">
+        <button class="btn btn-success" type="button">
           Anmelden
         </button>
-        <button class="btn btn-outline-primary" type="button">
+        <button class="btn btn-outline-success" type="button">
           Registrieren
         </button>
       </div>

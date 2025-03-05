@@ -37,13 +37,13 @@
   }
   
   .footer-links a {
-    color: var(--bs-gray-600);
+    color: var(--bs-grey-600);
     text-decoration: none;
     transition: color 0.2s ease;
   }
   
   .footer-links a:hover {
-    color: var(--bs-gray-900);
+    color: var(--bs-green);
   }
   
   .footer-copy {

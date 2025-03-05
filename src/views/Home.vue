@@ -1,11 +1,32 @@
 <template>
-    <div class="container-lg">
-      <h1>Nature at your Fingertips.</h1>
-      <img src="/src/assets/Monstera.png" height="450vh" alt="">
+  <div class="container-lg my-5">
+    <div class="content-wrapper d-flex flex-lg-row flex-column align-items-center justify-content-center gap-5">
+
+      <!-- Linke Seite: Bild -->
+      <div class="image-section">
+        <img src="/src/assets/Monstera.png" alt="Monstera" class="img-fluid">
+      </div>
+
+      <!-- Rechte Seite: Text & Upload -->
+      <div>
+        <h1>Nature at your Fingertips.</h1>
+        <p>
+          Erkenne deine Pflanzen im Handumdrehen! Lade einfach ein Bild hoch und erfahre mehr über deine grüne Begleitung. Perfekt für alle Pflanzenliebhaber:innen, die ihre Sammlung erweitern oder pflegen möchten.
+        </p>
+      <div class="text-section p-4 rounded">
+        <h2 class="mt-4">Bild hochladen</h2>
+        <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
+        <div class="input-group">
+          <input type="file" class="form-control" id="inputGroupFile02">
+          <label class="input-group-text" for="inputGroupFile02">Upload</label>
+        </div>
+      </div>
     </div>
-  </template>
-  
-  <script>
+    </div>
+  </div>
+</template>
+
+<script>
   export default {
     name: 'Home',
   };
@@ -14,9 +35,58 @@
   
 <style scoped>
 h1 {
-    font-size: 2.5rem;
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.content-wrapper {
+  gap: 3rem;
+}
+
+.image-section {
+  max-width: 500px;
+  flex-shrink: 0;
+}
+
+.image-section img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.text-section {
+  background-color: rgba(76, 76, 76, 0.171);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .text-section {
     margin-top: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
+  }
 }
 </style>
+
+
