@@ -1,15 +1,33 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :theme="theme" @toggle-theme="toggleTheme" />
     <router-view></router-view>
     <Footer />
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
+
+const theme = ref('light');
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  theme.value = savedTheme;
+  document.documentElement.setAttribute('data-theme', theme.value);
+  document.documentElement.setAttribute('data-bs-theme', theme.value);
+});
+
+const toggleTheme = () => {
+  theme.value = theme.value === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme.value);
+  document.documentElement.setAttribute('data-bs-theme', theme.value);
+  localStorage.setItem('theme', theme.value);
+};
 </script>
+
 
 <style>
 :root {
@@ -27,5 +45,4 @@ body {
   color: var(--text-color);
   transition: all 0.3s ease;
 }
-
 </style>

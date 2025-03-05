@@ -2,18 +2,24 @@
   <nav class="navbar">
     <div class="container-lg d-flex justify-content-between align-items-center">
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img
-          src="/src/assets/Logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2"/>
+        <img src="/src/assets/Logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2"
+        />
         PlantScan
       </a>
       <div class="d-flex align-items-center">
         <div class="theme-switch-wrapper me-3">
-          <input type="checkbox" id="themeSwitch" class="theme-switch" @change="toggleTheme" :checked="theme === 'dark'"/>
-            <label for="themeSwitch">
-              <span class="switch-icon">
-                {{ theme === 'dark' ? '🌙' : '☀️' }}
-              </span>
-            </label>
+          <input
+            type="checkbox"
+            id="themeSwitch"
+            class="theme-switch"
+            @change="emitToggleTheme"
+            :checked="theme === 'dark'"
+          />
+          <label for="themeSwitch">
+            <span class="switch-icon">
+              {{ theme === 'dark' ? '🌙' : '☀️' }}
+            </span>
+          </label>
         </div>
         <button class="btn btn-primary" type="button">
           Anmelden
@@ -27,23 +33,16 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
 
-  const theme = ref('light')
+const props = defineProps({
+  theme: String,
+});
 
-  onMounted(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      theme.value = savedTheme
-      document.documentElement.setAttribute('data-theme', savedTheme)
-    }
-  })
+const emit = defineEmits(['toggle-theme']);
 
-  function toggleTheme() {
-    theme.value = theme.value === 'light' ? 'dark' : 'light'
-    document.documentElement.setAttribute('data-theme', theme.value)
-    localStorage.setItem('theme', theme.value)
-}
+const emitToggleTheme = () => {
+  emit('toggle-theme');
+};
 </script>
 
 <style scoped>
