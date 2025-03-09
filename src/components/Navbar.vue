@@ -1,33 +1,41 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-lg d-flex justify-content-between align-items-center">
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="/src/assets/Logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2"
-        />
+        <img src="/src/assets/Logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2" />
         PlantScan
       </a>
-      <div class="d-flex align-items-center">
-        <div class="theme-switch-wrapper me-3">
-          <input type="checkbox" id="themeSwitch" class="theme-switch" @change="emitToggleTheme" :checked="theme === 'dark'"/>
-          <label for="themeSwitch">
-            <span class="switch-icon">
-              {{ theme === 'dark' ? '🌙' : '☀️' }}
-            </span>
-          </label>
+
+      <!-- Burger-Menü-Button für Mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <div class="d-flex flex-column flex-lg-row align-items-center">
+          <div class="theme-switch-wrapper me-lg-3">
+            <input type="checkbox" id="themeSwitch" class="theme-switch" @change="emitToggleTheme" :checked="theme === 'dark'" />
+            <label for="themeSwitch">
+              <span class="switch-icon">
+                {{ theme === 'dark' ? '🌙' : '☀️' }}
+              </span>
+            </label>
+          </div>
+            <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-lg-0">
+            <button class="btn btn-success" type="button">
+              Anmelden
+            </button>
+            <button class="btn btn-outline-success" type="button">
+              Registrieren
+            </button>
+          </div>
         </div>
-        <button class="btn btn-success" type="button">
-          Anmelden
-        </button>
-        <button class="btn btn-outline-success" type="button">
-          Registrieren
-        </button>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-
 const props = defineProps({
   theme: String,
 });
