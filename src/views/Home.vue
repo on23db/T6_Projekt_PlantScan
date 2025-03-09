@@ -1,27 +1,33 @@
 <template>
   <div class="container-lg my-5">
-    <div class="content-wrapper d-flex flex-lg-row flex-column align-items-center justify-content-center gap-5">
+    <div class="row d-flex flex-lg-row flex-column align-items-center justify-content-center gap-5">
 
       <!-- Linke Seite: Bild -->
-      <div class="image-section">
+      <div class="col-lg-6 image-section">
         <img src="/src/assets/Monstera.png" alt="Monstera" class="img-fluid">
       </div>
 
       <!-- Rechte Seite: Text & Upload -->
-      <div>
+      <div class="col-lg-6 text-content">
         <h1>Nature at your Fingertips.</h1>
         <p>
-          Erkenne deine Pflanzen im Handumdrehen! Lade einfach ein Bild hoch und erfahre mehr über deine grüne Begleitung. Perfekt für alle Pflanzenliebhaber:innen, die ihre Sammlung erweitern oder pflegen möchten.
+          Erkenne deine Pflanzen im Handumdrehen! Lade einfach ein Bild hoch und erfahre mehr über die Pflanzen in deiner Umwelt.
         </p>
-      <div class="text-section p-4 rounded">
-        <h2 class="mt-4">Bild hochladen</h2>
-        <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
-        <div class="input-group">
-          <input type="file" class="form-control" id="inputGroupFile02">
-          <label class="input-group-text" for="inputGroupFile02">Upload</label>
+
+        <div class="text-section p-4 rounded">
+          <h2>Probier es aus!</h2>
+          <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
+          <div class="input-group">
+            <input type="file" class="form-control" id="inputGroupFile02">
+            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+          </div>
         </div>
+        <div class="mt-4">
+        <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde noch heute Pflanzenexperte!</p>
+        <button class="btn" type="button">App installieren</button>
       </div>
-    </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -30,9 +36,8 @@
   export default {
     name: 'Home',
   };
-
 </script>
-  
+
 <style scoped>
 h1 {
   font-size: 2.8rem;
@@ -51,10 +56,6 @@ p {
   line-height: 1.6;
 }
 
-.content-wrapper {
-  gap: 3rem;
-}
-
 .image-section {
   max-width: 500px;
   flex-shrink: 0;
@@ -66,13 +67,29 @@ p {
   border-radius: 12px;
 }
 
+.text-content {
+  max-width: 600px; 
+}
+
 .text-section {
-  background-color: rgba(76, 76, 76, 0.171);
+  background-color: rgba(105, 105, 105, 0.257);
   padding: 2rem;
   border-radius: 12px;
-  max-width: 600px;
-  width: 100%;
 }
+
+.btn {
+  background-color: #e49e13;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background-color: #b8770d;
+  color: white;
+}
+
 
 @media (max-width: 768px) {
   h1 {
@@ -85,8 +102,20 @@ p {
 
   .text-section {
     margin-top: 2rem;
+    padding: 1.5rem; /* Mehr Abstand zu den Rändern */
+  }
+
+  .text-content {
+    max-width: 90%; /* Reduziert die Breite und sorgt für mehr Abstand */
+    padding-left: 15px;  /* Etwas Padding links */
+    padding-right: 15px; /* Etwas Padding rechts */
+  }
+  
+  /* Padding für den Container */
+  .container-lg {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
+
 </style>
-
-

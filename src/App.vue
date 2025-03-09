@@ -45,4 +45,23 @@ body {
   color: var(--text-color);
   transition: all 0.3s ease;
 }
+
+/* Hintergrund-Gradient unten */
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -20vh; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150vw; 
+  height: 100vh; 
+  background: radial-gradient(ellipse at bottom, rgba(44, 208, 96, 0.2) 0%, transparent 70%);
+  z-index: -1;
+}
+
+/* Dark Mode - Etwas dezenter */
+[data-theme="dark"] body::after {
+  background: radial-gradient(ellipse at bottom, rgba(44, 208, 96, 0.1) 0%, transparent 70%);
+}
+
 </style>
