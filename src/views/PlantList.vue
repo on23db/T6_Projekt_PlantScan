@@ -2,11 +2,11 @@
     <div class="plant-list-container">
         <h1>🌿 Gespeicherte Pflanzen</h1>
 
-        <div v-if="loading">Lade Pflanzen...</div>
-        <div v-else-if="plants.length === 0">Noch keine Pflanzen gespeichert.</div>
+        <div v-if="loading" class="loading">Lade Pflanzen...</div>
+        <div v-else-if="plants.length === 0" class="no-plants">Noch keine Pflanzen gespeichert.</div>
 
         <ul v-else>
-            <li v-for="plant in plants" :key="plant.id">
+            <li v-for="plant in plants" :key="plant.id" class="plant-item">
                 <h2>{{ plant.name }}</h2>
                 <p><strong>Wissenschaftlicher Name:</strong> {{ plant.scientificName }}</p>
                 <p><strong>Hinzugefügt am:</strong> {{ formatDate(plant.timestamp) }}</p>
@@ -51,17 +51,25 @@ export default {
 
 <style scoped>
 .plant-list-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 2rem auto;
     padding: 2rem;
-    background: #f9f9f9;
+    background: transparent;
     border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
     color: #217735;
+    margin-bottom: 1.5rem;
+}
+
+.loading,
+.no-plants {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 2rem;
 }
 
 ul {
@@ -69,11 +77,33 @@ ul {
     padding: 0;
 }
 
-li {
+.plant-item {
     background: white;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
     border-radius: 8px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.plant-item h2 {
+    font-size: 1.5rem;
+    color: #217735;
+}
+
+.plant-item p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .plant-list-container {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .plant-item {
+        padding: 1rem;
+    }
 }
 </style>

@@ -59,17 +59,20 @@
 
 <style scoped>
 .datenschutz-container {
-    max-width: 800px;
+    width: 100%;
+    max-width: 1200px;
+    /* Maximale Breite für größere Bildschirme */
     margin: 2rem auto;
     padding: 2rem;
-    background: #f9f9f9;
+    background: transparent;
+    box-shadow: none;
     border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
     color: #217735;
+    margin-bottom: 2rem;
 }
 
 h2 {
@@ -95,5 +98,14 @@ a {
 a:hover {
     color: #1a5e2e;
     text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .datenschutz-container {
+        width: 100%;
+        padding-left: 15px;
+        /* Mehr Abstand für kleine Bildschirme */
+        padding-right: 15px;
+    }
 }
 </style>
