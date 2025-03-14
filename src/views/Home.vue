@@ -11,7 +11,8 @@
       <div class="col-lg-6 text-content">
         <h1>Nature at your Fingertips.</h1>
         <p>
-          Erkenne deine Pflanzen im Handumdrehen! Lade einfach ein Bild hoch und erfahre mehr über die Pflanzen in deiner Umwelt.
+          Erkenne deine Pflanzen im Handumdrehen! Lade einfach ein Bild hoch und erfahre mehr über die Pflanzen in
+          deiner Umwelt.
         </p>
 
         <div class="text-section p-4 rounded">
@@ -22,10 +23,26 @@
             <label class="input-group-text" for="inputGroupFile02">Upload</label>
           </div>
         </div>
+
+        <div class="text-section p-4 rounded mt-4">
+          <h2>Deine gescannten Pflanzen</h2>
+          <p>
+            Alle Pflanzen, die du bereits gescannt hast, sind in deiner persönlichen Pflanzenübersicht gespeichert.
+            Du kannst jederzeit zurückkommen und mehr über die Pflanzen erfahren, die du hochgeladen hast.
+            Sieh dir die Details an, finde interessante Fakten und lerne mehr über die Pflanzen, die du in deiner
+            Umgebung entdeckt hast.
+          </p>
+          <p>
+            Klicke auf den Button unten, um deine gescannten Pflanzen anzusehen.
+          </p>
+          <router-link to="/plantlist" class="btn plantlist-btn">Zur Pflanzenübersicht</router-link>
+        </div>
+
         <div class="mt-4">
-        <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde noch heute Pflanzenexperte!</p>
-        <button class="btn" type="button">App installieren</button>
-      </div>
+          <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
+            noch heute Pflanzenexperte!</p>
+          <button class="btn" type="button">App installieren</button>
+        </div>
       </div>
 
     </div>
@@ -33,9 +50,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'Home',
-  };
+export default {
+  name: 'Home',
+};
 </script>
 
 <style scoped>
@@ -68,7 +85,7 @@ p {
 }
 
 .text-content {
-  max-width: 600px; 
+  max-width: 600px;
 }
 
 .text-section {
@@ -90,6 +107,23 @@ p {
   color: white;
 }
 
+.plantlist-btn {
+  background-color: transparent;
+  color: #b8770d;
+  padding: 0.5rem 1rem;
+  border: 2px solid;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+.plantlist-btn:hover {
+  background-color: #ffffff3a;
+  color: #b8770d;
+  border: 2px solid;
+}
 
 @media (max-width: 768px) {
   h1 {
@@ -102,20 +136,23 @@ p {
 
   .text-section {
     margin-top: 2rem;
-    padding: 1.5rem; /* Mehr Abstand zu den Rändern */
+    padding: 1.5rem;
+    /* Mehr Abstand zu den Rändern */
   }
 
   .text-content {
-    max-width: 90%; /* Reduziert die Breite und sorgt für mehr Abstand */
-    padding-left: 15px;  /* Etwas Padding links */
-    padding-right: 15px; /* Etwas Padding rechts */
+    max-width: 90%;
+    /* Reduziert die Breite und sorgt für mehr Abstand */
+    padding-left: 15px;
+    /* Etwas Padding links */
+    padding-right: 15px;
+    /* Etwas Padding rechts */
   }
-  
+
   /* Padding für den Container */
   .container-lg {
     padding-left: 15px;
     padding-right: 15px;
   }
 }
-
 </style>

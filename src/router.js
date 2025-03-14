@@ -7,8 +7,14 @@ import Hilfe from "./views/Hilfe.vue";
 import Kontakt from "./views/Kontakt.vue";
 import Datenschutz from "./views/Datenschutz.vue";
 import Überuns from "./views/Überuns.vue";
+import PlantList from './views/PlantList.vue';
 
 const routes = [
+  {
+    path: "/plantlist",
+    name: "PlantList",
+    component: PlantList
+  },
   { 
     path: "/überuns", 
     component: Überuns 
