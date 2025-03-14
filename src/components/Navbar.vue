@@ -14,20 +14,25 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <div class="d-flex flex-column flex-lg-row align-items-center">
           <div class="theme-switch-wrapper me-lg-3">
-            <input type="checkbox" id="themeSwitch" class="theme-switch" @change="emitToggleTheme" :checked="theme === 'dark'" />
+            <input type="checkbox" id="themeSwitch" class="theme-switch" @change="emitToggleTheme"
+              :checked="theme === 'dark'" />
             <label for="themeSwitch">
               <span class="switch-icon">
                 {{ theme === 'dark' ? '🌙' : '☀️' }}
               </span>
             </label>
           </div>
-            <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-lg-0">
-            <button class="btn btn-success" type="button">
-              Anmelden
-            </button>
-            <button class="btn btn-outline-success" type="button">
-              Registrieren
-            </button>
+          <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-lg-0">
+            <router-link to="/login">
+              <button class="btn btn-success" type="button">
+                Anmelden
+              </button>
+            </router-link>
+            <router-link to="/register">
+              <button class="btn btn-outline-success" type="button">
+                Registrieren
+              </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -73,7 +78,7 @@ button {
   display: none;
 }
 
-.theme-switch + label {
+.theme-switch+label {
   display: flex;
   align-items: center;
   width: 50px;
@@ -85,7 +90,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-.theme-switch + label .switch-icon {
+.theme-switch+label .switch-icon {
   position: absolute;
   top: 2px;
   left: 2px;
@@ -101,11 +106,11 @@ button {
 }
 
 /* Dunkler Modus */
-.theme-switch:checked + label {
+.theme-switch:checked+label {
   background-color: var(--bs-gray-700);
 }
 
-.theme-switch:checked + label .switch-icon {
+.theme-switch:checked+label .switch-icon {
   transform: translateX(24px);
 }
 </style>
