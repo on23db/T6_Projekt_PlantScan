@@ -13,7 +13,7 @@
 
 <script>
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"; // Firebase korrekt importieren
+import { auth } from "../firebase.js"; // Firebase korrekt importieren
 
 export default {
     data() {
