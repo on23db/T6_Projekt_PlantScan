@@ -1,10 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-lg d-flex justify-content-between align-items-center">
-      <a class="navbar-brand d-flex align-items-center" href="#">
+      <router-link to="/home" class="navbar-brand d-flex align-items-center">
         <img src="/src/assets/Logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2" />
         PlantScan
-      </a>
+      </router-link>
 
       <!-- Burger-Menü-Button für Mobile -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
