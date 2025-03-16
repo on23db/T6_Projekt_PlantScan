@@ -3,7 +3,7 @@
       <div v-if="plantData">
         <h3 class="scientific-name">{{ plantData.species.scientificName }}</h3>
         <p><strong>Wissenschaftlicher Name:</strong> {{ plantData.species.scientificName }}</p>
-        
+  
         <div v-if="plantData.species.commonNames && plantData.species.commonNames.length">
           <p><strong>Häufige Namen:</strong> {{ plantData.species.commonNames.join(', ') }}</p>
         </div>
@@ -15,20 +15,41 @@
           <p><strong>Beschreibung:</strong> {{ plantData.species.description }}</p>
         </div>
   
+        <!-- Bilder -->
         <div v-if="plantData.images && plantData.images.length" class="image-info">
           <p><strong>Bildquelle:</strong> <a :href="plantData.images[0].url.o" target="_blank" class="link">Bild anzeigen</a></p>
           <p><strong>Bildlizenz:</strong> {{ plantData.images[0].license || 'Keine Lizenz verfügbar' }}</p>
           <p><strong>Bildautor:</strong> {{ plantData.images[0].author || 'Unbekannt' }}</p>
         </div>
   
-        <div v-if="plantData.iucn && plantData.iucn.category">
-          <p><strong>Schutzstatus:</strong> {{ plantData.iucn.category }}</p>
+        <!-- Pflegehinweise -->
+        <div v-if="plantData.species.careTips && plantData.species.careTips.length">
+          <p><strong>Pflegehinweise:</strong></p>
+          <ul>
+            <li v-for="(tip, index) in plantData.species.careTips" :key="index">{{ tip }}</li>
+          </ul>
+        </div>
+        <div v-else>
+          <p>❗ Keine Pflegehinweise verfügbar.</p>
         </div>
   
+        <!-- Geografische Herkunft -->
         <div v-if="plantData.species.geographicArea">
           <p><strong>Herkunft:</strong> {{ plantData.species.geographicArea }}</p>
         </div>
+        <div v-else>
+          <p>❗ Keine geografische Herkunft gefunden.</p>
+        </div>
   
+        <!-- Schutzstatus -->
+        <div v-if="plantData.iucn && plantData.iucn.category">
+          <p><strong>Schutzstatus:</strong> {{ plantData.iucn.category }}</p>
+        </div>
+        <div v-else>
+          <p>❗ Kein Schutzstatus verfügbar.</p>
+        </div>
+  
+        <!-- Weitere Taxonomische Daten -->
         <div v-if="plantData.species.family && plantData.species.family.scientificName">
           <p><strong>Familie:</strong> {{ plantData.species.family.scientificName }}</p>
         </div>
@@ -57,13 +78,7 @@
           <p><strong>Unterfamilie:</strong> {{ plantData.species.subFamily.scientificName }}</p>
         </div>
   
-        <div v-if="plantData.species.careTips && plantData.species.careTips.length">
-          <p><strong>Pflegehinweise:</strong></p>
-          <ul>
-            <li v-for="(tip, index) in plantData.species.careTips" :key="index">{{ tip }}</li>
-          </ul>
-        </div>
-  
+        <!-- GBIF ID -->
         <div v-if="plantData.gbif && plantData.gbif.id">
           <p><strong>GBIF ID:</strong> <a :href="'https://www.gbif.org/species/' + plantData.gbif.id" target="_blank" class="link">Mehr erfahren</a></p>
         </div>
@@ -76,6 +91,9 @@
           <p><strong>Hybriden:</strong> {{ plantData.species.hybrids.join(', ') }}</p>
         </div>
       </div>
+      <div v-else>
+        <p>❗ Keine Pflanzendaten verfügbar.</p>
+      </div>
     </div>
   </template>
   
@@ -87,6 +105,10 @@
         type: Object,
         required: true, // Pflanzendaten müssen hier übergeben werden
       },
+    },
+    mounted() {
+      // Debugging: Überprüfung der erhaltenen Daten
+      console.log(this.plantData);
     },
   };
   </script>
