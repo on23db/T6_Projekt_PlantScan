@@ -95,7 +95,7 @@
   .plant-details {
     margin-top: 20px;
     padding: 20px;
-    background-color: #2c3e50; /* Dunklerer Hintergrund für besseren Kontrast */
+    background-color: rgba(130, 136, 124, 0.291); /* Dunklerer Hintergrund für besseren Kontrast */
     color: #ecf0f1; /* Helle Schriftfarbe */
     border-radius: 10px;
   }
