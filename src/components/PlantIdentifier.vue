@@ -14,17 +14,27 @@
     <div v-if="errorMessage" class="error">❌ {{ errorMessage }}</div>
 
     <plant-details v-if="plantData" :plantData="plantData" />
+
+    <!-- Popup für Benachrichtigung wird hier eingebunden -->
+    <plant-info-popup
+      v-if="showPopup"
+      :plantData="plantData"
+      :isVisible="showPopup"
+      @close-popup="closePopup"
+    />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import PlantDetails from './PlantDetails.vue';
+import PlantInfoPopup from '@/views/PlantInfoPopup.vue';  // Import Popup-Komponente
 
 export default {
   name: 'PlantIdentifier',
   components: {
     PlantDetails,
+    PlantInfoPopup,  // Einbinden der Komponente
   },
   data() {
     return {
@@ -33,6 +43,7 @@ export default {
       isLoading: false,
       plantData: null,
       errorMessage: null,
+      showPopup: false,  // Steuerung für das Popup
     };
   },
   methods: {
@@ -64,6 +75,9 @@ export default {
         });
 
         this.plantData = response.data.results.length ? response.data.results[0] : null;
+        if (this.plantData) {
+          this.showPopup = true;  // Popup anzeigen, wenn Pflanze erkannt wurde
+        }
       } catch (error) {
         console.error("Fehler bei der API-Anfrage:", error);
         this.errorMessage = error.response
@@ -73,6 +87,10 @@ export default {
         this.isLoading = false;
       }
     },
+
+    closePopup() {
+      this.showPopup = false;  // Popup schließen
+    }
   },
 };
 </script>
