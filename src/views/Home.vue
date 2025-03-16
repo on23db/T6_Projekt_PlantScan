@@ -18,22 +18,13 @@
         <div class="text-section p-4 rounded">
           <h2>Probier es aus!</h2>
           <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
-          <div class="input-group">
-            <input type="file" class="form-control" id="inputGroupFile02">
-            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-          </div>
+          <PlantIdentifier />
         </div>
 
         <div class="text-section p-4 rounded mt-4">
           <h2>Deine gescannten Pflanzen</h2>
           <p>
             Alle Pflanzen, die du bereits gescannt hast, sind in deiner persönlichen Pflanzenübersicht gespeichert.
-            Du kannst jederzeit zurückkommen und mehr über die Pflanzen erfahren, die du hochgeladen hast.
-            Sieh dir die Details an, finde interessante Fakten und lerne mehr über die Pflanzen, die du in deiner
-            Umgebung entdeckt hast.
-          </p>
-          <p>
-            Klicke auf den Button unten, um deine gescannten Pflanzen anzusehen.
           </p>
           <router-link to="/plantlist" class="btn plantlist-btn">Zur Pflanzenübersicht</router-link>
         </div>
@@ -50,8 +41,12 @@
 </template>
 
 <script>
+import PlantIdentifier from '@/components/PlantIdentifier.vue';
 export default {
   name: 'Home',
+  components: {  
+    PlantIdentifier
+  }
 };
 </script>
 
