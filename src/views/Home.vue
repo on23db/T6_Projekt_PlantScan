@@ -4,7 +4,7 @@
 
       <!-- Linke Seite: Bild -->
       <div class="col-lg-6 image-section">
-        <img src="/src/assets/Monstera.png" alt="Monstera" class="img-fluid">
+        <img src="/src/assets/Monstera deliciosa.png" alt="Monstera" class="img-fluid">
       </div>
 
       <!-- Rechte Seite: Text & Upload -->
@@ -20,15 +20,6 @@
           <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
           <PlantIdentifier />
         </div>
-
-        <div class="text-section p-4 rounded mt-4">
-          <h2>Deine gescannten Pflanzen</h2>
-          <p>
-            Alle Pflanzen, die du bereits gescannt hast, sind in deiner persönlichen Pflanzenübersicht gespeichert.
-          </p>
-          <router-link to="/plantlist" class="btn plantlist-btn">Zur Pflanzenübersicht</router-link>
-        </div>
-
         <div class="mt-4">
           <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
             noch heute Pflanzenexperte!</p>
@@ -42,17 +33,18 @@
 
 <script>
 import PlantIdentifier from '@/components/PlantIdentifier.vue';
+
 export default {
   name: 'Home',
   components: {  
     PlantIdentifier
-  }
+    }
 };
 </script>
 
 <style scoped>
 h1 {
-  font-size: 2.8rem;
+  font-size: 2,7rem;
   margin-bottom: 1rem;
   font-weight: bold;
 }
@@ -84,7 +76,7 @@ p {
 }
 
 .text-section {
-  background-color: rgba(105, 105, 105, 0.257);
+  background-color: rgba(130, 136, 124, 0.291);
   padding: 2rem;
   border-radius: 12px;
 }
@@ -102,24 +94,6 @@ p {
   color: white;
 }
 
-.plantlist-btn {
-  background-color: transparent;
-  color: #b8770d;
-  padding: 0.5rem 1rem;
-  border: 2px solid;
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  text-decoration: none;
-  transition: background-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
-}
-
-.plantlist-btn:hover {
-  background-color: #ffffff3a;
-  color: #b8770d;
-  border: 2px solid;
-}
-
 @media (max-width: 768px) {
   h1 {
     font-size: 2rem;
@@ -132,19 +106,14 @@ p {
   .text-section {
     margin-top: 2rem;
     padding: 1.5rem;
-    /* Mehr Abstand zu den Rändern */
   }
 
   .text-content {
     max-width: 90%;
-    /* Reduziert die Breite und sorgt für mehr Abstand */
     padding-left: 15px;
-    /* Etwas Padding links */
     padding-right: 15px;
-    /* Etwas Padding rechts */
   }
 
-  /* Padding für den Container */
   .container-lg {
     padding-left: 15px;
     padding-right: 15px;
