@@ -22,7 +22,7 @@
   
         <!-- GBIF ID -->
         <div v-if="plantData.gbif && plantData.gbif.id">
-          <p><strong>GBIF ID:</strong> <a :href="'https://www.gbif.org/species/' + plantData.gbif.id" target="_blank" class="link">Mehr erfahren</a></p>
+          <p><strong>Weitere Informationen auf GBIF:</strong> <a :href="'https://www.gbif.org/species/' + plantData.gbif.id" target="_blank" class="link">Mehr erfahren</a></p>
         </div>
   
   
