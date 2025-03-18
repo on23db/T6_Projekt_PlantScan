@@ -34,7 +34,7 @@ export default {
   name: 'PlantIdentifier',
   components: {
     PlantDetails,
-    PlantInfoPopup,  // Einbinden der Komponente
+     // PlantInfoPopup,  // Einbinden der Komponente
   },
   data() {
     return {
