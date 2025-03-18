@@ -28,7 +28,6 @@ const toggleTheme = () => {
 };
 </script>
 
-
 <style>
 :root {
   --background-color: #ffffff;
@@ -63,5 +62,4 @@ body::after {
 [data-theme="dark"] body::after {
   background: radial-gradient(ellipse at bottom, rgba(44, 208, 96, 0.1) 0%, transparent 70%);
 }
-
 </style>
