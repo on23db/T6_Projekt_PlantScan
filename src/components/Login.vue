@@ -27,7 +27,7 @@ export default {
             try {
                 const auth = getAuth();
                 await signInWithEmailAndPassword(auth, this.email, this.password);
-                this.$router.push("/home"); // Anpassung je nach Routing
+                this.$router.push("/profile"); // Anpassung je nach Routing
             } catch (error) {
                 this.errorMessage = error.message;
             }

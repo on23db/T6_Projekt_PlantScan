@@ -8,6 +8,8 @@ import Kontakt from "./views/Kontakt.vue";
 import Datenschutz from "./views/Datenschutz.vue";
 import Überuns from "./views/Überuns.vue";
 import PlantList from './views/PlantList.vue';
+import Logout from './views/Logout.vue'; 
+import Profile from './views/Profile.vue'; 
 
 const routes = [
   {
@@ -53,6 +55,16 @@ const routes = [
     path: "/register", 
     name: 'Register',
     component: Register 
+  },
+  { 
+    path: "/logout", 
+    name: 'Logout',
+    component: Logout 
+  },
+  { 
+    path: "/profile", 
+    name: 'Profile',
+    component: Profile // Route für Profile hinzufügen
   }
 ];
 

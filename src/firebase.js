@@ -1,6 +1,6 @@
 // Import Firebase-Funktionen
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -20,6 +20,23 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+// Benutzerstatus überwachen
+export const monitorAuthState = (callback) => {
+  onAuthStateChanged(auth, (user) => {
+    callback(user); // Ruft die übergebene Callback-Funktion mit dem Benutzerobjekt auf
+  });
+};
+
+// Logout-Funktion
+export const logoutUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error("Fehler beim Logout:", error);
+    throw error; // Optional: Fehler weitergeben
+  }
+};
 
 // Exporte
 export { app, auth, db, storage };

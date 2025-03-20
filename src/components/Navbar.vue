@@ -33,6 +33,14 @@
                 Registrieren
               </button>
             </router-link>
+            <router-link v-if="isLoggedIn" to="/profile">
+              <button class="btn btn-outline-primary" type="button">
+                Profil
+              </button>
+            </router-link>
+            <button v-if="isLoggedIn" class="btn btn-danger" @click="logout">
+              Abmelden
+            </button>
           </div>
         </div>
       </div>
@@ -50,6 +58,8 @@ const emit = defineEmits(['toggle-theme']);
 const emitToggleTheme = () => {
   emit('toggle-theme');
 };
+
+
 </script>
 
 <style scoped>
