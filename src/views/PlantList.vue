@@ -16,18 +16,25 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { ref, onMounted, watch } from "vue";
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default {
-    setup() {
+    props: { 
+        userId: { // Prop hinzugefügt, um Benutzer-ID zu erhalten
+            type: String,
+            required: true
+        }
+    },
+    setup(props) {
         const plants = ref([]);
         const loading = ref(true);
 
         const fetchPlants = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "plants"));
+                const q = query(collection(db, "plants"), where("userId", "==", props.userId)); // Benutzer-spezifische Abfrage
+                const querySnapshot = await getDocs(q);
                 plants.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             } catch (error) {
                 console.error("Fehler beim Laden der Pflanzen:", error);
@@ -35,6 +42,9 @@ export default {
                 loading.value = false;
             }
         };
+
+        // Überwacht Änderungen der Benutzer-ID
+        watch(() => props.userId, fetchPlants);
 
         const formatDate = (timestamp) => {
             if (!timestamp) return "Unbekannt";

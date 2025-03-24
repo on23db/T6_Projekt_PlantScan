@@ -1,18 +1,27 @@
 <template>
     <div class="profile-container">
       <h1>Willkommen, Pflanzenfreund!</h1>
-      <p>Hier siehst du deine gescannten Pflanzen:</p>
+      
+
+        <!-- PlantList einfügen -->
+      <PlantList :userId="userId" />
+
       <button @click="logout" class="btn btn-danger">Abmelden</button>
     </div>
   </template>
   
   <script>
   import { getAuth, signOut } from "firebase/auth";
-  
+  import PlantList from "@/views/PlantList.vue";
+
   export default {
+    components: {
+    PlantList
+  },
     data() {
       return {
-        userEmail: null
+        userEmail: null,
+        userId: null
       };
     },
     mounted() {
@@ -21,6 +30,7 @@
   
       if (user) {
         this.userEmail = user.email; // Zeige die E-Mail des Benutzers an
+        this.userId = user.uid; // Benutzer-ID speichern
       } else {
         this.$router.push("/login"); // Falls nicht eingeloggt, zurück zur Login-Seite
       }
