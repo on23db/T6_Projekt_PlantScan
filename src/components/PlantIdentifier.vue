@@ -100,7 +100,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(50, 50, 50, 0.8);
+  background: #91919151;
   width: auto;
   height: 30vh;
   border-radius: 12px;
