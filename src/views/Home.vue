@@ -23,7 +23,7 @@
         <div class="mt-4">
           <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
             noch heute Pflanzenexperte!</p>
-          <button class="btn" type="button">App installieren</button>
+          <button class="btn" type="button"  @click="installApp" v-if="installReady">App installieren</button>
         </div>
       </div>
 
@@ -36,10 +36,45 @@ import PlantIdentifier from '@/components/PlantIdentifier.vue';
 
 export default {
   name: 'Home',
-  components: {  
+  components: {
     PlantIdentifier
+  },
+  data() {
+    return {
+      deferredPrompt: null,
+      installReady: false,
+      isStandalone: false
+    };
+  },
+mounted() {
+  // Check if PWA is running standalone
+  this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+  // Show install button if prompt is available
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    this.deferredPrompt = e;
+    this.installReady = true;
+  });
+},
+
+  methods: {
+    async installApp() {
+      if (this.deferredPrompt) {
+        this.deferredPrompt.prompt();
+        const choiceResult = await this.deferredPrompt.userChoice;
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        this.deferredPrompt = null;
+        this.installReady = false;
+      }
     }
+  }
 };
+
 </script>
 
 <style scoped>

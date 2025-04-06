@@ -12,6 +12,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      devOptions: {
+        enabled: true // Um die PWA im Dev-Modus zu aktivieren
+      },
       manifest: {
         name: 'PlantScan',
         short_name: 'PlantScan',
@@ -22,12 +25,12 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/src/assets/Logo.png',
+            src: 'web-app-manifest-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/src/assets/Logo.png',
+            src: '/web-app-manifest-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           }

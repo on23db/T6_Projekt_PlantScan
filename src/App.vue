@@ -26,6 +26,10 @@ const toggleTheme = () => {
   document.documentElement.setAttribute('data-bs-theme', theme.value);
   localStorage.setItem('theme', theme.value);
 };
+function isStandaloneMode() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
 </script>
 
 <style>
