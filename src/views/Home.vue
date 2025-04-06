@@ -20,10 +20,10 @@
           <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
           <PlantIdentifier />
         </div>
-        <div class="mt-4">
+        <div class="mt-4" v-if="installReady && !isStandalone">
           <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
             noch heute Pflanzenexperte!</p>
-          <button class="btn" type="button"  @click="installApp" v-if="installReady">App installieren</button>
+          <button class="btn" type="button"  @click="installApp" >App installieren</button>
         </div>
       </div>
 

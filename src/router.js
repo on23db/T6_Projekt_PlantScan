@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './views/Home.vue';  
+import InstalledHome from './views/InstalledHome.vue';
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import Impressum from "./views/Impressum.vue";
@@ -9,13 +10,22 @@ import Datenschutz from "./views/Datenschutz.vue";
 import Überuns from "./views/Überuns.vue";
 import PlantList from './views/PlantList.vue';
 import Logout from './views/Logout.vue'; 
-import Profile from './views/Profile.vue'; 
+import Profile from './views/Profile.vue';
+
+// Überprüfen, ob die App im Standalone-Modus läuft
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
 const routes = [
   {
     path: "/plantlist",
     name: "PlantList",
     component: PlantList
+  },
+  {
+    path: '/installed',
+    name: 'installed-home',
+    component: InstalledHome,
+    meta: { layout: 'installed' } // Standalone-Version für installierte App
   },
   { 
     path: "/überuns", 
@@ -40,11 +50,12 @@ const routes = [
   { 
     path: '/', 
     redirect: '/home' 
-  }, 
+  },
   {
     path: '/home',
     name: 'Home',
-    component: Home,
+    // Dynamisch die richtige Komponente basierend auf dem Standalone-Modus auswählen
+    component: isStandalone ? InstalledHome : Home,
   },
   { 
     path: "/login", 
@@ -64,7 +75,7 @@ const routes = [
   { 
     path: "/profile", 
     name: 'Profile',
-    component: Profile // Route für Profile hinzufügen
+    component: Profile 
   }
 ];
 

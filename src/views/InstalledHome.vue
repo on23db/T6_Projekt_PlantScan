@@ -1,62 +1,129 @@
 <template>
-    <div class="installed-home container text-center py-5">
-      <h1 class="headline mb-4">Bereit zum Scannen 🌱</h1>
-      <p class="lead mb-4">
-        Öffne deine Kamera und beginne direkt mit dem Live-Scan deiner Pflanzen.
-      </p>
-  
-      <div class="camera-placeholder mb-4">
-        <!-- Hier kann später die Kamera-Ansicht rein -->
-        <img src="@/assets/camera-preview-placeholder.png" alt="Kamera-Preview" class="img-fluid rounded">
+  <div class="container-lg my-5">
+    <div class="row d-flex flex-lg-row flex-column align-items-center justify-content-center gap-5">
+
+      <div class="col-lg-6 text-content">
+        <h1>Nature at your Fingertips.</h1>
+
+        <div class="text-section p-4 rounded">
+          <PlantIdentifier />
+        </div>
       </div>
-  
-      <button class="btn btn-scan" @click="startScan">Scan starten</button>
+
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'InstalledHome',
-    methods: {
-      startScan() {
-        // Placeholder-Logik – hier später Kamera-Funktion einbauen
-        console.log('Scan gestartet – Kamera öffnen 🔍🌿');
-        // z. B. Navigation zur Kamera-Seite oder Kamera-Component zeigen
-        this.$router.push('/camera');
+  </div>
+</template>
+
+<script>
+import PlantIdentifier from '@/components/PlantIdentifier.vue';
+
+export default {
+  name: 'InstalledHome',
+  components: {
+    PlantIdentifier
+  },
+  data() {
+    return {
+      deferredPrompt: null,
+      installReady: false,
+      isStandalone: false
+    };
+  },
+
+  methods: {
+    async installApp() {
+      if (this.deferredPrompt) {
+        this.deferredPrompt.prompt();
+        const choiceResult = await this.deferredPrompt.userChoice;
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the A2HS prompt');
+        } else {
+          console.log('User dismissed the A2HS prompt');
+        }
+        this.deferredPrompt = null;
+        this.installReady = false;
       }
     }
   }
-  </script>
-  
-  <style scoped>
-  .installed-home {
-    max-width: 600px;
-    margin: 0 auto;
+};
+
+</script>
+
+<style scoped>
+h1 {
+  font-size: 2,7rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.image-section {
+  max-width: 500px;
+  flex-shrink: 0;
+}
+
+.image-section img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.text-content {
+  max-width: 600px;
+}
+
+.text-section {
+  background-color: rgba(130, 136, 124, 0.291);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.btn {
+  background-color: #e49e13;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background-color: #b8770d;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
   }
-  
-  .headline {
-    font-size: 2.5rem;
-    font-weight: bold;
+
+  h2 {
+    font-size: 1.5rem;
   }
-  
-  .camera-placeholder {
-    border: 2px dashed #ccc;
-    padding: 1rem;
-    border-radius: 12px;
-    background-color: #f8f9fa;
+
+  .text-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
   }
-  
-  .btn-scan {
-    background-color: #56ab2f;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+
+  .text-content {
+    max-width: 90%;
+    padding-left: 15px;
+    padding-right: 15px;
   }
-  
-  .btn-scan:hover {
-    background-color: #3d8a1a;
+
+  .container-lg {
+    padding-left: 15px;
+    padding-right: 15px;
   }
-  </style>
-  
+}
+</style>
