@@ -11,6 +11,7 @@ import Überuns from "./views/Überuns.vue";
 import PlantList from './views/PlantList.vue';
 import Logout from './views/Logout.vue'; 
 import Profile from './views/Profile.vue';
+import CameraCapture from '@/components/CameraCapture.vue';
 
 // Überprüfen, ob die App im Standalone-Modus läuft
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -76,6 +77,11 @@ const routes = [
     path: "/profile", 
     name: 'Profile',
     component: Profile 
+  },
+  {
+    path: '/camera',
+    name: 'CameraCapture',
+    component: CameraCapture
   }
 ];
 
