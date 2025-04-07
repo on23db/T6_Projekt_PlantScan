@@ -6,6 +6,7 @@
         <h1>Nature at your Fingertips.</h1>
 
         <div class="text-section p-4 rounded">
+          <CameraCapture />
           <PlantIdentifier />
         </div>
       </div>
@@ -15,12 +16,14 @@
 </template>
 
 <script>
+import CameraCapture from '@/components/CameraCapture.vue';
 import PlantIdentifier from '@/components/PlantIdentifier.vue';
 
 export default {
   name: 'InstalledHome',
   components: {
-    PlantIdentifier
+    PlantIdentifier,
+    CameraCapture
   },
   data() {
     return {
