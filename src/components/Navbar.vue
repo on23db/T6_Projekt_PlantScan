@@ -23,16 +23,19 @@
             </label>
           </div>
           <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-lg-0">
-            <router-link to="/login">
+            <!-- Login und Register Buttons nur anzeigen, wenn der User nicht eingeloggt ist -->
+            <router-link v-if="!isLoggedIn" to="/login">
               <button class="btn btn-success" type="button">
                 Anmelden
               </button>
             </router-link>
-            <router-link to="/register">
+            <router-link v-if="!isLoggedIn" to="/register">
               <button class="btn btn-outline-success" type="button">
                 Registrieren
               </button>
             </router-link>
+
+            <!-- Profil und Logout Buttons nur anzeigen, wenn der User eingeloggt ist -->
             <router-link v-if="isLoggedIn" to="/profile">
               <button class="btn btn-outline-primary" type="button">
                 Profil
@@ -49,6 +52,32 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+
+// Firebase Setup
+const auth = getAuth();
+
+// Überwache den Authentifizierungsstatus
+const isLoggedIn = ref(false);
+
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    isLoggedIn.value = !!user; // Setze isLoggedIn basierend auf dem Benutzerstatus
+  });
+});
+
+// Logout Funktion
+const logout = async () => {
+  try {
+    await signOut(auth);
+    isLoggedIn.value = false; // Status zurücksetzen, wenn der User abgemeldet wird
+  } catch (error) {
+    console.error("Fehler beim Ausloggen:", error);
+  }
+};
+
+// Props für Theme-Switch
 const props = defineProps({
   theme: String,
 });
@@ -58,8 +87,6 @@ const emit = defineEmits(['toggle-theme']);
 const emitToggleTheme = () => {
   emit('toggle-theme');
 };
-
-
 </script>
 
 <style scoped>

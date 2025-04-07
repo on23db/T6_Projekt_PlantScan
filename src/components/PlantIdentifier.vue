@@ -29,6 +29,10 @@
 import axios from 'axios';
 import PlantDetails from './PlantDetails.vue';
 import PlantInfoPopup from '@/views/PlantInfoPopup.vue';  // Import Popup-Komponente
+import { getAuth } from 'firebase/auth'
+import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { auth, db } from '@/firebase' // falls du die Instanzen schon zentral exportierst
+
 
 export default {
   name: 'PlantIdentifier',
@@ -47,52 +51,77 @@ export default {
     };
   },
   methods: {
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.selectedFile = file;
-        this.previewImage = URL.createObjectURL(file);
-        this.identifyPlant(file);  // Sofortige Identifikation nach Upload
-      }
-    },
-
-    async identifyPlant(file) {
-      this.isLoading = true;
-      this.errorMessage = null;
-
-      const formData = new FormData();
-      formData.append('images', file);
-
-      try {
-        const response = await axios.post('https://my-api.plantnet.org/v2/identify/all', formData, {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_PLANTNET_API_KEY}`,
-            'Content-Type': 'multipart/form-data',
-          },
-          params: {
-            lang: 'de', // Hier wird die Sprache auf Deutsch gesetzt
-          }
-        });
-
-        this.plantData = response.data.results.length ? response.data.results[0] : null;
-        if (this.plantData) {
-          this.showPopup = true;  // Popup anzeigen, wenn Pflanze erkannt wurde
-        }
-      } catch (error) {
-        console.error("Fehler bei der API-Anfrage:", error);
-        this.errorMessage = error.response
-          ? `Fehler: ${error.response.status} - ${error.response.data.message || 'Unbekannt'}`
-          : "Verbindungsfehler.";
-      } finally {
-        this.isLoading = false;
-      }
-    },
-
-    closePopup() {
-      this.showPopup = false;  // Popup schließen
+  handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.previewImage = URL.createObjectURL(file);
+      this.identifyPlant(file);  // Sofortige Identifikation nach Upload
     }
   },
-};
+
+  async identifyPlant(file) {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const formData = new FormData();
+    formData.append('images', file);
+
+    try {
+      const response = await axios.post('https://my-api.plantnet.org/v2/identify/all', formData, {
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_PLANTNET_API_KEY}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        params: {
+          lang: 'de',
+        }
+      });
+
+      this.plantData = response.data.results.length ? response.data.results[0] : null;
+
+      if (this.plantData) {
+        this.showPopup = true;
+        this.saveScanToFirestore(this.plantData); // ← Jetzt ist es an der richtigen Stelle
+      }
+
+    } catch (error) {
+      console.error("Fehler bei der API-Anfrage:", error);
+      this.errorMessage = error.response
+        ? `Fehler: ${error.response.status} - ${error.response.data.message || 'Unbekannt'}`
+        : "Verbindungsfehler.";
+    } finally {
+      this.isLoading = false;
+    }
+  },
+
+  async saveScanToFirestore(plantData) {
+    const currentUser = getAuth().currentUser;
+    if (!currentUser) {
+      console.warn("Kein Benutzer angemeldet, daher wird nichts gespeichert.");
+      return;
+    }
+
+    const userId = currentUser.uid;
+    const scan = {
+      name: plantData.species?.scientificNameWithoutAuthor || 'Unbekannt',
+      date: serverTimestamp(),
+      score: plantData.score || null,
+      imageUrl: plantData.images?.[0]?.url?.m || null
+    };
+
+    try {
+      await addDoc(collection(db, `users/${userId}/scans`), scan);
+      console.log("Pflanzenscan erfolgreich gespeichert.");
+    } catch (error) {
+      console.error("Fehler beim Speichern des Scans:", error);
+    }
+  },
+
+  closePopup() {
+    this.showPopup = false;
+  }
+} }
 </script>
 
 <style scoped>

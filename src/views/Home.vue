@@ -19,6 +19,7 @@
           <h2>Probier es aus!</h2>
           <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
           <PlantIdentifier />
+          <PlantHistory />
         </div>
         <div class="mt-4" v-if="installReady && !isStandalone">
           <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
@@ -32,12 +33,14 @@
 </template>
 
 <script>
+import PlantHistory from '@/components/PlantHistory.vue';
 import PlantIdentifier from '@/components/PlantIdentifier.vue';
 
 export default {
   name: 'Home',
   components: {
-    PlantIdentifier
+    PlantIdentifier,
+    PlantHistory
   },
   data() {
     return {

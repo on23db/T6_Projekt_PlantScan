@@ -29,6 +29,7 @@
           <div class="mt-4">
             <h3>Das hast du als letztes entdeckt:</h3>
             <p class="last-discovery">Bild oder Pflanze anzeigen</p>
+            <PlantHistory />
           </div>
         </div>
 
@@ -45,6 +46,7 @@
 
 <script>
 import CameraCapture from '@/components/CameraCapture.vue';
+import PlantHistory from '@/components/PlantHistory.vue';
 import PlantIdentifier from '@/components/PlantIdentifier.vue';
 
 export default {
