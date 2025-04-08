@@ -48,17 +48,17 @@ const routes = [
   },
   { 
     path: '/', 
-    redirect: '/Loading' // Leitet direkt auf den Splash-Screen weiter
+    redirect: '/loading' 
   },
   {
     path: '/splash',
     name: 'Splash',
-    component: Splash, // Splash Screen als Startseite
+    component: Splash, 
   },
   {
     path: '/Home',
     name: 'Home',
-    component: Home, // Direkt Home ohne Prüfungen
+    component: Home, 
   },
   { 
     path: "/login", 

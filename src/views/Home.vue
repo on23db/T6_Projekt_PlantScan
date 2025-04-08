@@ -28,10 +28,6 @@
           <button class="btn" type="button" @click="installApp">App installieren</button>
         </div>
         
-        <!-- Hinweis für Kamera-Nutzung -->
-        <div v-if="isStandalone" class="mt-4">
-          <p>Du kannst jetzt deine Pflanzen direkt scannen und sofort erkennen!</p>
-        </div>
       </div>
 
     </div>
@@ -56,7 +52,7 @@ export default {
   mounted() {
     // Überprüfen, ob die PWA im Standalone-Modus läuft
     this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
+    
     // Installationsaufforderung anzeigen, wenn verfügbar
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();

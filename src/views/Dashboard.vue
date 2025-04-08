@@ -3,7 +3,7 @@
     <div class="row d-flex flex-lg-row flex-column align-items-center justify-content-center gap-5">
       <!-- Linke Seite: Headline und Bild -->
       <div class="col-lg-4 text-content">
-        <h1>Discover the world at your own pace. ✨</h1>
+        <h1>Discover the world at your own pace.✨</h1>
         <img src="/src/assets/Monstera deliciosa.png" alt="Monstera" class="img-fluid">
       </div>
 

@@ -28,7 +28,7 @@ onMounted(() => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       // Wenn der Benutzer eingeloggt ist, zu Home weiterleiten
-      router.push('/home');
+      router.push('/dashboard');
     } else {
       // Wenn der Benutzer nicht eingeloggt ist, zu Splash weiterleiten
       router.push('/splash');

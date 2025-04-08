@@ -1,217 +1,270 @@
 <template>
-    <div class="identifier-container">
-      <!-- Kameraansicht -->
-      <div class="camera-section" v-if="!capturedImage">
-        <video ref="video" class="camera-video" autoplay playsinline></video>
-        <button @click="captureImage" class="capture-btn">📸 Bild aufnehmen</button>
-      </div>
-  
-      <!-- Vorschau & Upload -->
-      <div class="upload-section" v-if="!capturedImage">
-        <label for="file-upload" class="upload-box">
-          <input type="file" id="file-upload" @change="handleFileUpload" accept="image/*" hidden />
-          <div class="upload-text">📷 Bild hochladen</div>
-        </label>
-      </div>
-  
-      <!-- Vorschau aufgenommenes oder hochgeladenes Bild -->
-      <div v-if="previewImage" class="preview">
-        <img :src="previewImage" alt="Bildvorschau" />
-        <button @click="sendToAPI" class="send-btn">🌿 Pflanze identifizieren</button>
-      </div>
-  
-      <!-- Ergebnisse -->
-      <div v-if="isLoading" class="loading">🔍 Analyse läuft...</div>
-      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-      <plant-details v-if="plantData" :plantData="plantData" />
+  <div class="identifier-container">
+    <!-- Kameraansicht oder eingefrorenes Bild -->
+    <div class="camera-section" v-if="!capturedImage">
+      <video ref="video" class="camera-video" autoplay playsinline></video>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  import PlantDetails from './PlantDetails.vue';
-  
-  export default {
-    components: {
-      PlantDetails,
-    },
-    data() {
-      return {
-        capturedImage: null,
-        previewImage: null,
-        isLoading: false,
-        plantData: null,
-        errorMessage: null,
-      };
-    },
-    mounted() {
-      this.startCamera();
-    },
-    methods: {
-      startCamera() {
-        const video = this.$refs.video;
-        if (navigator.mediaDevices?.getUserMedia) {
-          navigator.mediaDevices
-            .getUserMedia({ video: { facingMode: 'environment' } })
-            .then((stream) => {
-              video.srcObject = stream;
-            })
-            .catch((err) => {
-              console.error("Kamera-Fehler:", err);
-              this.errorMessage = "Kamera konnte nicht gestartet werden.";
-            });
-        }
-      },
-      stopCamera() {
-        const stream = this.$refs.video?.srcObject;
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-        }
-      },
-      captureImage() {
-        const video = this.$refs.video;
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        this.capturedImage = canvas.toDataURL('image/png');
-        this.previewImage = this.capturedImage;
-        this.stopCamera();
-      },
-      handleFileUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-          this.previewImage = URL.createObjectURL(file);
-          this.capturedImage = file;
-        }
-      },
-      async sendToAPI() {
-        this.isLoading = true;
-        this.errorMessage = null;
-  
-        const formData = new FormData();
-        if (typeof this.capturedImage === 'string') {
-          const blob = await (await fetch(this.capturedImage)).blob();
-          formData.append('images', blob, 'capture.png');
-        } else {
-          formData.append('images', this.capturedImage);
-        }
-  
-        try {
-          const response = await axios.post('https://my-api.plantnet.org/v2/identify/all', formData, {
-            headers: {
-              'Authorization': `Bearer ${import.meta.env.VITE_PLANTNET_API_KEY}`,
-              'Content-Type': 'multipart/form-data',
-            },
-            params: {
-              lang: 'de',
-            },
-          });
-  
-          this.plantData = response.data.results?.[0] || null;
-        } catch (error) {
-          this.errorMessage = error.response
-            ? `Fehler: ${error.response.status} – ${error.response.data.message || 'Unbekannt'}`
-            : "Verbindungsfehler.";
-        } finally {
-          this.isLoading = false;
-        }
+    
+    <!-- Wenn ein Bild aufgenommen wurde, wird es hier angezeigt -->
+    <div v-if="capturedImage" class="camera-section frozen-image">
+      <img :src="capturedImage" alt="Eingefrorenes Bild" class="frozen-img" />
+    </div>
+
+    <!-- Button zum Bild aufnehmen -->
+    <div v-if="!capturedImage" class="button-container">
+      <button @click="captureImage" class="capture-btn">📸 Bild aufnehmen</button>
+    </div>
+
+    <!-- Vorschau des Bildes -->
+    <div v-if="previewImage" class="preview">
+      <button @click="resetImage" class="reset-btn">📷 Nochmal aufnehmen</button>
+      <button @click="sendToAPI" class="send-btn">🌿 Pflanze identifizieren</button>
+    </div>
+
+    <!-- Ergebnisse -->
+    <div v-if="isLoading" class="loading">🔍 Analyse läuft...</div>
+    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+    <plant-details v-if="plantData" :plantData="plantData" />
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import PlantDetails from './PlantDetails.vue';
+
+export default {
+  components: {
+    PlantDetails,
+  },
+  data() {
+    return {
+      stream: null,
+      capturedImage: null,
+      previewImage: null,
+      isLoading: false,
+      plantData: null,
+      errorMessage: null,
+    };
+  },
+  mounted() {
+    this.startCamera();
+  },
+  methods: {
+    async startCamera() {
+  const video = this.$refs.video;
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    this.errorMessage = "Dein Browser unterstützt keine Kamera.";
+    return;
+  }
+
+  try {
+    this.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    video.srcObject = this.stream;
+
+    // Sicherstellen, dass das Video abgespielt wird
+    await video.play();
+  } catch (err) {
+    console.error("Kamera-Fehler:", err);
+    this.errorMessage = "Kamera konnte nicht gestartet werden.";
+  }
+}
+,
+    stopCamera() {
+      if (this.stream) {
+        this.stream.getTracks().forEach((track) => track.stop());
+        this.stream = null;
+      }
+      if (this.$refs.video) {
+        this.$refs.video.srcObject = null;
       }
     },
-    beforeUnmount() {
-      this.stopCamera();
+    captureImage() {
+      const video = this.$refs.video;
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const imageData = canvas.toDataURL('image/png');
+      this.capturedImage = imageData;
+      this.previewImage = imageData;
+
+      // Kamera wird NICHT gestoppt, falls man nochmal fotografieren möchte
+    },
+    resetImage() {
+  this.capturedImage = null;
+  this.previewImage = null;
+
+  // Stop + Neustart für einen sauberen Reset
+  this.stopCamera();
+
+  // Etwas Verzögerung, damit das Video-Element Zeit hat sich zu "resetten"
+  setTimeout(() => {
+    this.startCamera();
+  }, 300);
+}
+,
+    async sendToAPI() {
+      this.isLoading = true;
+      this.errorMessage = null;
+
+      const formData = new FormData();
+
+      if (typeof this.previewImage === 'string') {
+        const blob = await (await fetch(this.previewImage)).blob();
+        formData.append('images', blob, 'capture.png');
+      }
+
+      try {
+        const response = await axios.post('https://my-api.plantnet.org/v2/identify/all', formData, {
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_PLANTNET_API_KEY}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          params: {
+            lang: 'de',
+          },
+        });
+
+        this.plantData = response.data.results?.[0] || null;
+      } catch (error) {
+        this.errorMessage = error.response
+          ? `Fehler: ${error.response.status} – ${error.response.data.message || 'Unbekannt'}`
+          : "Verbindungsfehler.";
+      } finally {
+        this.isLoading = false;
+      }
     }
-  };
-  </script>
-  
-  <style scoped>
-  .identifier-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  
-  .camera-section {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    border-radius: 12px;
-    border: 2px solid #fff;
-  }
-  
-  .camera-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-  
-  .capture-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #28a745;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 24px;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .upload-box {
-    background: #91919151;
-    border: 2px dashed #aaa;
-    padding: 1rem;
-    border-radius: 12px;
-    cursor: pointer;
-    text-align: center;
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .preview {
-    text-align: center;
-  }
-  
-  .preview img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 12px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .send-btn {
-    background-color: #007bff;
-    border: none;
-    padding: 10px 16px;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .loading,
-  .error {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    border-radius: 8px;
-    color: white;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .loading {
-    background-color: #444;
-  }
-  
-  .error {
-    background-color: #e74c3c;
-  }
-  </style>
-  
+  },
+  beforeUnmount() {
+    this.stopCamera();
+  },
+};
+</script>
+
+
+<style scoped>
+.identifier-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.camera-section {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 2px solid #ababab;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.frozen-image {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.frozen-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.capture-btn {
+  background-color: #dbb20d;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.capture-btn:hover {
+  background-color: #218838;
+}
+
+.preview {
+  text-align: center;
+}
+
+.preview img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+
+.send-btn, .reset-btn {
+  border: none;
+  padding: 10px 16px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+.send-btn {
+  background-color: #197b36;
+}
+
+.reset-btn {
+  background-color: #585858;
+}
+
+.send-btn:hover, .reset-btn:hover {
+  opacity: 0.8;
+}
+
+.loading,
+.error {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.loading {
+  background-color: #444;
+}
+
+.error {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 400px;
+  font-size: 1rem;
+  background-color: #e74c3c;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 12px;
+}
+</style>

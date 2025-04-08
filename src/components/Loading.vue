@@ -13,12 +13,13 @@
   const router = useRouter()
   const auth = getAuth()
   
+  
   onMounted(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        router.replace('/home')
+        router.replace('/dashboard')
       } else {
-        router.replace('/login')
+        router.replace('/home')
       }
     })
   })
@@ -26,8 +27,6 @@
   
   <style scoped>
   .loading-screen {
-    height: 100vh;
-    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
