@@ -1,13 +1,15 @@
 <template>
   <div class="container-lg my-5">
     <div class="row d-flex flex-lg-row flex-column align-items-center justify-content-center gap-5">
-      <!-- Rechte Seite: Text & Optionen -->
-      <div class="col-lg-6 text-content">
+      <!-- Linke Seite: Headline und Bild -->
+      <div class="col-lg-4 text-content">
         <h1>Discover the world at your own pace. ✨</h1>
+        <img src="/src/assets/Monstera deliciosa.png" alt="Monstera" class="img-fluid">
+      </div>
 
-        <!-- Optionen: Bild hochladen und Kamera nutzen -->
+      <!-- Rechte Seite: Optionen zum Scannen und Hochladen von Bildern -->
+      <div class="col-lg-6 text-content">
         <div class="text-section p-4 rounded">
-          <p>Wähle eine der Optionen, um eine Pflanze zu identifizieren:</p>
 
           <!-- Grid für Bild hochladen und Kamera nutzen nebeneinander -->
           <div class="row g-4">
@@ -27,8 +29,6 @@
 
           <!-- Zuletzt Entdecktes -->
           <div class="mt-4">
-            <h3>Das hast du als letztes entdeckt:</h3>
-            <p class="last-discovery">Bild oder Pflanze anzeigen</p>
             <PlantHistory />
           </div>
         </div>
@@ -50,10 +50,11 @@ import PlantHistory from '@/components/PlantHistory.vue';
 import PlantIdentifier from '@/components/PlantIdentifier.vue';
 
 export default {
-  name: 'HomeScreen',
+  name: 'Dashboard',
   components: {
     CameraCapture,
-    PlantIdentifier
+    PlantIdentifier,
+    PlantHistory
   },
   data() {
     return {
@@ -91,3 +92,81 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.text-content {
+  max-width: 600px;
+}
+
+.text-section {
+  background-color: rgba(130, 136, 124, 0.291);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.btn {
+  background-color: #e49e13;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background-color: #b8770d;
+  color: white;
+}
+
+.img-fluid {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.last-discovery {
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  .text-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+  }
+
+  .text-content {
+    max-width: 90%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .container-lg {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+</style>

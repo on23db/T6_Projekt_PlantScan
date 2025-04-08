@@ -8,16 +8,32 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';  // Firebase Auth importieren
 import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
+import { useRouter } from 'vue-router';  // Router für Weiterleitungen
 
 const theme = ref('light');
+const router = useRouter();  // Router verwenden
 
 onMounted(() => {
+  // Theme aus dem localStorage laden
   const savedTheme = localStorage.getItem('theme') || 'light';
   theme.value = savedTheme;
   document.documentElement.setAttribute('data-theme', theme.value);
   document.documentElement.setAttribute('data-bs-theme', theme.value);
+
+  // Firebase Auth State überwachen
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // Wenn der Benutzer eingeloggt ist, zu Home weiterleiten
+      router.push('/home');
+    } else {
+      // Wenn der Benutzer nicht eingeloggt ist, zu Splash weiterleiten
+      router.push('/splash');
+    }
+  });
 });
 
 const toggleTheme = () => {

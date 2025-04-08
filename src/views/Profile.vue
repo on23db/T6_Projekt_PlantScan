@@ -1,14 +1,22 @@
 <template>
-  <div class="profile-container">
+  <div class="profile-container container">
     <h1>Willkommen, Pflanzenfreund!</h1>
-    
-    <!-- Eingeloggter Benutzer -->
-    <p v-if="userEmail">Angemeldet als: {{ userEmail }}</p>
 
-    <!-- Zuletzt gescannte Pflanzen -->
-    <PlantHistory />
+    <!-- Bootstrap Grid: Zwei Spalten -->
+    <div class="row">
+      <!-- Linke Spalte: Benutzerinformationen -->
+      <div class="col-md-6">
+        <h3>Benutzerprofil</h3>
+        <p v-if="userEmail">Angemeldet als: <strong>{{ userEmail }}</strong></p>
 
-    <button @click="logout" class="btn btn-danger">Abmelden</button>
+        <button @click="logout" class="btn btn-danger">Abmelden</button>
+      </div>
+
+      <!-- Rechte Spalte: Zuletzt gescannte Pflanzen -->
+      <div class="col-md-6">
+        <PlantHistory />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,13 +59,22 @@ export default {
 
 <style scoped>
 .profile-container {
-  max-width: 600px;
-  margin: auto;
-  text-align: center;
-  padding: 20px;
+  padding: 30px;
 }
 
 button {
   margin-top: 20px;
+}
+
+h3 {
+  margin-bottom: 15px;
+}
+
+.row {
+  margin-top: 30px;
+}
+
+.col-md-6 {
+  padding: 15px;
 }
 </style>

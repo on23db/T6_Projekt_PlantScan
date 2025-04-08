@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from './views/Home.vue';  
-import InstalledHome from './views/InstalledHome.vue';
+import Dashboard from './views/Dashboard.vue';
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import Impressum from "./views/Impressum.vue";
@@ -12,9 +12,7 @@ import PlantList from './views/PlantList.vue';
 import Logout from './views/Logout.vue'; 
 import Profile from './views/Profile.vue';
 import CameraCapture from '@/components/CameraCapture.vue';
-
-// Überprüfen, ob die App im Standalone-Modus läuft
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+import Splash from './views/Splash.vue'; 
 
 const routes = [
   {
@@ -23,9 +21,9 @@ const routes = [
     component: PlantList
   },
   {
-    path: '/installed',
-    name: 'installed-home',
-    component: InstalledHome,
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard,
     meta: { layout: 'installed' } // Standalone-Version für installierte App
   },
   { 
@@ -50,13 +48,17 @@ const routes = [
   },
   { 
     path: '/', 
-    redirect: '/home' 
+    redirect: '/Loading' // Leitet direkt auf den Splash-Screen weiter
   },
   {
-    path: '/home',
+    path: '/splash',
+    name: 'Splash',
+    component: Splash, // Splash Screen als Startseite
+  },
+  {
+    path: '/Home',
     name: 'Home',
-    // Dynamisch die richtige Komponente basierend auf dem Standalone-Modus auswählen
-    component: isStandalone ? InstalledHome : Home,
+    component: Home, // Direkt Home ohne Prüfungen
   },
   { 
     path: "/login", 

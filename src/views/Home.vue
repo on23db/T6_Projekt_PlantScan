@@ -19,12 +19,18 @@
           <h2>Probier es aus!</h2>
           <p>Lade ein Foto deiner Pflanze hoch und wir helfen dir beim Identifizieren.</p>
           <PlantIdentifier />
-          <PlantHistory />
         </div>
+
+        <!-- App Installation Hinweis -->
         <div class="mt-4" v-if="installReady && !isStandalone">
           <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
-            noch heute Pflanzenexperte!</p>
-          <button class="btn" type="button"  @click="installApp" >App installieren</button>
+            noch heute Pflanzenexperte und nutze die Kamera, um Pflanzen direkt zu scannen!</p>
+          <button class="btn" type="button" @click="installApp">App installieren</button>
+        </div>
+        
+        <!-- Hinweis für Kamera-Nutzung -->
+        <div v-if="isStandalone" class="mt-4">
+          <p>Du kannst jetzt deine Pflanzen direkt scannen und sofort erkennen!</p>
         </div>
       </div>
 
@@ -33,14 +39,12 @@
 </template>
 
 <script>
-import PlantHistory from '@/components/PlantHistory.vue';
 import PlantIdentifier from '@/components/PlantIdentifier.vue';
 
 export default {
   name: 'Home',
   components: {
-    PlantIdentifier,
-    PlantHistory
+    PlantIdentifier
   },
   data() {
     return {
@@ -49,18 +53,17 @@ export default {
       isStandalone: false
     };
   },
-mounted() {
-  // Check if PWA is running standalone
-  this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  mounted() {
+    // Überprüfen, ob die PWA im Standalone-Modus läuft
+    this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-  // Show install button if prompt is available
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    this.deferredPrompt = e;
-    this.installReady = true;
-  });
-},
-
+    // Installationsaufforderung anzeigen, wenn verfügbar
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      this.deferredPrompt = e;
+      this.installReady = true;
+    });
+  },
   methods: {
     async installApp() {
       if (this.deferredPrompt) {
@@ -77,12 +80,11 @@ mounted() {
     }
   }
 };
-
 </script>
 
 <style scoped>
 h1 {
-  font-size: 2,7rem;
+  font-size: 2.7rem;
   margin-bottom: 1rem;
   font-weight: bold;
 }

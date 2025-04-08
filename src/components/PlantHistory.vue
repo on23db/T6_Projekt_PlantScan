@@ -7,7 +7,6 @@
       </li>
     </ul>
     <p v-else>Du hast noch keine Pflanzen gescannt.</p>
-    <button @click="scanPlant">Neue Pflanze scannen</button>
   </div>
   <div v-else>
     <p>Bitte melde dich an, um deine Scans zu sehen.</p>
