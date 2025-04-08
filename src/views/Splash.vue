@@ -54,7 +54,7 @@ h1 {
 }
 
 .logo-image {
-  width: 20em;
+  width: 15em;
   height: auto;
 }
 

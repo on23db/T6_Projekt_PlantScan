@@ -29,8 +29,7 @@
 
           <!-- Zuletzt Entdecktes -->
           <div class="mt-4">
-            <PlantHistory :maxScans="2" />
-            <router-link to="/profile" class="btn btn-link">Alle Scans ansehen</router-link> <!-- Link zur Profilseite -->
+            <PlantHistory />
           </div>
         </div>
 

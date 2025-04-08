@@ -38,7 +38,7 @@ onMounted(() => {
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
-    router.push(user ? '/dashboard' : '/splash');
+    router.push(user ? '/dashboard' : '/home');
   });
 
   checkIfMobile(); // Initiale Überprüfung
