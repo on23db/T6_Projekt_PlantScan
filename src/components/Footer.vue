@@ -17,7 +17,6 @@
 export default {
   name: 'Footer',
 };
-
 </script>
 
 <style scoped>
@@ -48,5 +47,12 @@ export default {
 
 .footer-copy {
   color: var(--bs-gray-500);
+}
+
+/* Media Query für Mobile Geräte */
+@media (max-width: 768px) {
+  .footer {
+    display: none; /* Footer auf mobilen Geräten ausblenden */
+  }
 }
 </style>

@@ -1,14 +1,13 @@
 <template>
   <div class="profile-container container">
-    <h1>Willkommen, Pflanzenfreund!</h1>
+    <h1>Benutzerprofil</h1>
 
     <!-- Bootstrap Grid: Zwei Spalten -->
     <div class="row">
       <!-- Linke Spalte: Benutzerinformationen -->
       <div class="col-md-6">
-        <h3>Benutzerprofil</h3>
         <p v-if="userEmail">Angemeldet als: <strong>{{ userEmail }}</strong></p>
-
+        <ThemeToggle /> <!-- ThemeToggle Komponente -->
         <button @click="logout" class="btn btn-danger">Abmelden</button>
       </div>
 
@@ -23,10 +22,12 @@
 <script>
 import { getAuth, signOut } from "firebase/auth";
 import PlantHistory from "@/components/PlantHistory.vue"; 
+import ThemeToggle from "@/components/ThemeToggle.vue";
 
 export default {
   components: {
-    PlantHistory
+    PlantHistory,
+    ThemeToggle
   },
   data() {
     return {
@@ -40,7 +41,7 @@ export default {
     if (user) {
       this.userEmail = user.email;
     } else {
-      this.$router.push("/login");
+      this.$router.push("/splash");
     }
   },
   methods: {
@@ -48,7 +49,7 @@ export default {
       try {
         const auth = getAuth();
         await signOut(auth);
-        this.$router.push("/login");
+        this.$router.push("/dashboard");
       } catch (error) {
         console.error("Fehler beim Logout:", error);
       }

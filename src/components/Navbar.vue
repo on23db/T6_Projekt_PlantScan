@@ -6,22 +6,16 @@
         PlantScan
       </router-link>
 
-      <!-- Burger-Menü-Button für Mobile -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <!-- Burger-Menü-Button für Mobile nur bei größeren Bildschirmen anzeigen -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" v-if="!isMobile">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav" v-if="!isMobile">
         <div class="d-flex flex-column flex-lg-row align-items-center">
-          <div class="theme-switch-wrapper me-lg-3">
-            <input type="checkbox" id="themeSwitch" class="theme-switch" @change="emitToggleTheme"
-              :checked="theme === 'dark'" />
-            <label for="themeSwitch">
-              <span class="switch-icon">
-                {{ theme === 'dark' ? '🌙' : '☀️' }}
-              </span>
-            </label>
-          </div>
+          <!-- ThemeToggle Komponente -->
+          <ThemeToggle />
+
           <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-lg-0">
             <!-- Login und Register Buttons nur anzeigen, wenn der User nicht eingeloggt ist -->
             <router-link v-if="!isLoggedIn" to="/login">
@@ -54,6 +48,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import ThemeToggle from './ThemeToggle.vue';  // Importiere die ThemeToggle-Komponente
 
 // Firebase Setup
 const auth = getAuth();
@@ -61,9 +56,20 @@ const auth = getAuth();
 // Überwache den Authentifizierungsstatus
 const isLoggedIn = ref(false);
 
+// Bildschirmgröße überwachen, um zu entscheiden, ob Mobile oder Desktop
+const isMobile = ref(false);
+
 onMounted(() => {
   onAuthStateChanged(auth, (user) => {
     isLoggedIn.value = !!user; // Setze isLoggedIn basierend auf dem Benutzerstatus
+  });
+
+  // Prüfe Bildschirmgröße
+  isMobile.value = window.innerWidth < 768;
+
+  // Optional: Event Listener für Resize-Event, um die Bildschirmgröße dynamisch zu aktualisieren
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth < 768;
   });
 });
 
@@ -76,18 +82,9 @@ const logout = async () => {
     console.error("Fehler beim Ausloggen:", error);
   }
 };
-
-// Props für Theme-Switch
-const props = defineProps({
-  theme: String,
-});
-
-const emit = defineEmits(['toggle-theme']);
-
-const emitToggleTheme = () => {
-  emit('toggle-theme');
-};
 </script>
+
+
 
 <style scoped>
 nav {
