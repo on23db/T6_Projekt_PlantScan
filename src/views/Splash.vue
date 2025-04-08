@@ -1,93 +1,98 @@
 <template>
-    <div class="welcome-container">
-      <div class="logo-section">
-        <img src="/src/assets/logo.png" alt="App Logo" class="logo" />
-      </div>
-      <div class="auth-options">
-        <h2>Willkommen in der Pflanzenwelt!</h2>
-        <p>Erkenne Pflanzen und entdecke die Natur mit Leichtigkeit.</p>
-        <div class="buttons">
-          <button @click="goToLogin" class="btn btn-primary">Login</button>
-          <button @click="goToRegister" class="btn btn-secondary">Registrieren</button>
-          <button @click="guestLogin" class="btn btn-tertiary">Als Gast fortfahren</button>
-        </div>
+  <div class="welcome-container">
+    <div class="logo-section">
+      <h1>PlantScan</h1>
+      <img src="/src/assets/Monstera deliciosa.png" alt="Monstera" class="img-fluid logo-image">
+    </div>
+    <div class="auth-options">
+      <div class="buttons">
+        <button @click="goToLogin" class="btn btn-success">Login</button>
+        <button @click="goToRegister" class="btn btn-outline-success">Registrieren</button>
+        <p class="guest-link">
+          <a @click="guestLogin" href="#">Als Gast fortfahren</a>
+        </p>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    methods: {
-      goToLogin() {
-        this.$router.push('/login');
-      },
-      goToRegister() {
-        this.$router.push('/register');
-      },
-      guestLogin() {
-        this.$router.push('/home'); // Direkt zur Home-Seite, ohne Anmeldung
-      }
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    goToLogin() {
+      this.$router.push('/login');
+    },
+    goToRegister() {
+      this.$router.push('/register');
+    },
+    guestLogin() {
+      this.$router.push('/dashboard'); 
     }
-  };
-  </script>
-  
-  <style scoped>
-  .welcome-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    height: 100vh;
   }
-  
-  .logo-section {
-    margin-bottom: 2rem;
-  }
-  
-  .logo {
-    width: 150px;
-    height: auto;
-  }
-  
-  .auth-options {
-    max-width: 400px;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .buttons button {
-    display: block;
-    width: 100%;
-    margin-bottom: 1rem;
-    padding: 12px;
-  }
-  
-  .btn-primary {
-    background-color: #217735;
-    color: white;
-  }
-  
-  .btn-secondary {
-    background-color: #e49e13;
-    color: white;
-  }
-  
-  .btn-tertiary {
-    background-color: #ccc;
-    color: black;
-  }
-  
-  .btn:hover {
-    opacity: 0.8;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--text-color);
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.logo-image {
+  width: 20em;
+  height: auto;
+}
+
+.auth-options {
+  max-width: 400px;
+  width: 100%;
+}
+
+.buttons button {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.guest-link {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.guest-link span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.guest-link a {
+  color: var(--navbar-text);
+  text-decoration: none;
+}
+
+.guest-link a:hover {
+  text-decoration: underline;
+}
+</style>

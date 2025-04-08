@@ -20,7 +20,7 @@
             <!-- Login und Register Buttons nur anzeigen, wenn der User nicht eingeloggt ist -->
             <router-link v-if="!isLoggedIn" to="/login">
               <button class="btn btn-success" type="button">
-                Anmelden
+                Login
               </button>
             </router-link>
             <router-link v-if="!isLoggedIn" to="/register">

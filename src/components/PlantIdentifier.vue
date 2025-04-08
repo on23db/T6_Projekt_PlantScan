@@ -28,17 +28,15 @@
 <script>
 import axios from 'axios';
 import PlantDetails from './PlantDetails.vue';
-import PlantInfoPopup from '@/views/PlantInfoPopup.vue';  // Import Popup-Komponente
 import { getAuth } from 'firebase/auth'
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import { auth, db } from '@/firebase' // falls du die Instanzen schon zentral exportierst
+import { auth, db } from '@/firebase' 
 
 
 export default {
   name: 'PlantIdentifier',
   components: {
-    PlantDetails,
-     // PlantInfoPopup,  // Einbinden der Komponente
+    PlantDetails
   },
   data() {
     return {
@@ -82,7 +80,7 @@ export default {
 
       if (this.plantData) {
         this.showPopup = true;
-        this.saveScanToFirestore(this.plantData); // ← Jetzt ist es an der richtigen Stelle
+        this.saveScanToFirestore(this.plantData); 
       }
 
     } catch (error) {
