@@ -1,3 +1,41 @@
+<template>
+  <div v-if="user">
+    <h2>Zuletzt gescannte Pflanzen</h2>
+
+    <div v-if="limitedScans.length > 0" class="row">
+      <div
+        class="col-md-6 mb-3"
+        v-for="(scan, index) in limitedScans"
+        :key="index"
+      >
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ scan.name }}</h5>
+            <p class="card-text">
+              Gescannt am: {{ formatDate(scan.date) }}
+            </p>
+            <a v-if="scan.gbifId" :href="'https://www.gbif.org/species/' + scan.gbifId" target="_blank" class="link">
+              Mehr erfahren
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mt-2 d-flex justify-content-center" v-if="!isProfilePage">
+        <router-link to="/profile" class="btn-history">
+          Zu deinem Verlauf
+        </router-link>
+      </div>
+    </div>
+
+    <p v-else>Du hast noch keine Pflanzen gescannt.</p>
+  </div>
+
+  <div v-else>
+    <p>Melde dich an, um deine letzten Scans zu sehen.</p>
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { onAuthStateChanged } from 'firebase/auth'
@@ -96,17 +134,13 @@ const saveScansToIndexedDB = (userId, scans) => {
     const objectStore = transaction.objectStore('scans')
 
     scans.forEach(scan => {
-      if (scan.id) {
-        objectStore.put({
-          id: scan.id,          // Sicherstellen, dass der `id`-Wert als KeyPath verwendet wird
-          userId: userId,
-          name: scan.name,
-          date: scan.date,
-          gbifId: scan.gbifId
-        })
-      } else {
-        console.error('Scan-Objekt hat keine gültige ID:', scan)
-      }
+      objectStore.put({
+        id: scan.id,
+        userId: userId,
+        name: scan.name,
+        date: scan.date,
+        gbifId: scan.gbifId
+      })
     })
 
     transaction.oncomplete = () => {
@@ -126,4 +160,27 @@ const formatDate = (date) => {
     return new Date(date).toLocaleDateString()
   }
 }
+
 </script>
+
+<style>
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.btn-history {
+  background-color: orange;
+  color: white;
+  padding: 0.75rem 1.25rem; 
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  width: 100%; 
+  text-align: center; 
+}
+
+.btn-history:hover {
+  background-color: darkorange;
+}
+</style>

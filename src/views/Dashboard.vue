@@ -22,12 +22,6 @@
         <div class="history-box mt-4">
           <PlantHistory />
         </div>
-
-        <!-- PWA Install Option -->
-        <div class="mt-4" v-if="installReady && !isStandalone">
-          <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde noch heute Pflanzenexperte!</p>
-          <button class="btn" type="button" @click="installApp">App installieren</button>
-        </div>
       </div>
     </div>
   </div>
