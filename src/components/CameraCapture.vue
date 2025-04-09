@@ -157,7 +157,7 @@ export default {
 .camera-section {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 25em;
   aspect-ratio: 3/4;
   overflow: hidden;
   border-radius: 12px;
@@ -186,7 +186,7 @@ export default {
 }
 
 .capture-btn {
-  background-color: #dbb20d;
+  background-color: orange;
   border: none;
   padding: 12px 20px;
   border-radius: 12px;
@@ -198,7 +198,7 @@ export default {
 }
 
 .capture-btn:hover {
-  background-color: #218838;
+  background-color: darkorange;
 }
 
 .preview {
@@ -222,11 +222,11 @@ export default {
 }
 
 .send-btn {
-  background-color: #197b36;
+  background-color: green;
 }
 
 .reset-btn {
-  background-color: #585858;
+  background-color: grey;
 }
 
 .send-btn:hover, .reset-btn:hover {

@@ -4,12 +4,12 @@
 
       <!-- Linke Seite: Bild -->
       <div class="col-lg-6 image-section">
+        <h1>Nature at your Fingertips.</h1>
         <img src="/src/assets/Monstera deliciosa.png" alt="Monstera" class="img-fluid">
       </div>
 
       <!-- Rechte Seite: Text & Upload -->
       <div class="col-lg-6 text-content">
-        <h1>Nature at your Fingertips.</h1>
         <p>
           Erkenne deine Pflanzen im Handumdrehen! Lade einfach ein Bild hoch und erfahre mehr über die Pflanzen in
           deiner Umwelt.
@@ -24,8 +24,11 @@
         <!-- App Installation Hinweis -->
         <div class="mt-4" v-if="installReady && !isStandalone">
           <p><strong>Ready for more?</strong> Mit unserer App hältst du das ganze Wissen der Natur in deiner Hand. Werde
-            noch heute Pflanzenexperte und nutze die Kamera, um Pflanzen direkt zu scannen!</p>
+            noch heute Pflanzenexperte und nutze deine Kamera, um Pflanzen direkt zu scannen!</p>
           <button class="btn" type="button" @click="installApp">App installieren</button>
+        </div>
+        <div class="mt-4" v-else="installReady && !isStandalone">
+          <p><strong>Die App ist bereits installiert!</strong> Öffne sie direkt, um Pflanzen zu scannen.</p>
         </div>
         
       </div>
@@ -102,7 +105,7 @@ p {
 }
 
 .image-section img {
-  width: 100%;
+  width: 80%;
   height: auto;
   border-radius: 12px;
 }

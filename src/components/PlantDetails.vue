@@ -53,17 +53,17 @@ export default {
 .plant-details {
   margin-top: 20px;
   padding: 20px;
-  background-color: var(--background-color); /* Dynamischer Hintergrund */
-  color: var(--text-color); /* Dynamische Textfarbe */
+  background-color: var(--background-color); 
+  color: var(--text-color); 
   border-radius: 10px;
-  transition: all 0.3s ease; /* Sanfter Übergang bei Theme-Wechsel */
+  transition: all 0.3s ease; 
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .plant-details h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #f39c12; /* Orange für wissenschaftlichen Namen */
+  color: #f39c12; 
 }
 
 .plant-details p {
@@ -80,7 +80,6 @@ export default {
   text-decoration: underline;
 }
 
-/* Stil für die Liste der Pflegehinweise */
 ul {
   list-style-type: square;
   margin-left: 20px;

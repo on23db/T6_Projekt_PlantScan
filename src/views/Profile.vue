@@ -2,12 +2,10 @@
   <div class="profile-container container">
     <h1>Benutzerprofil</h1>
 
-    <!-- Bootstrap Grid: Zwei Spalten -->
     <div class="row">
-      <!-- Linke Spalte: Benutzerinformationen und ThemeToggle -->
       <div class="col-md-6">
         <div class="profile-box">
-          <h3>Informationen</h3>
+          <h2>Informationen</h2>
           <p v-if="userEmail">Angemeldet als: <strong>{{ userEmail }}</strong></p>
           
           <div class="theme-toggle-container d-flex align-items-center">
@@ -21,15 +19,14 @@
         </div>
       </div>
 
-      <!-- Rechte Spalte: Hier könnten weitere Infos oder Pflanzen-Historie rein -->
       <div class="col-md-6">
         <div class="profile-box">
-          <PlantHistory /> <!-- Wenn du die PlantHistory hier noch haben möchtest -->
+          <PlantHistory /> 
         </div>
       </div>
     </div>
 
-    <!-- Legal Links nur auf mobilen Geräten anzeigen -->
+    
     <div v-if="isMobile" class="legal-links">
       <ul>
         <li><router-link to="/überuns">Über uns</router-link></li>
@@ -56,7 +53,7 @@ export default {
   data() {
     return {
       userEmail: null,
-      isMobile: false // Flag für mobile Ansicht
+      isMobile: false 
     };
   },
   mounted() {
@@ -80,7 +77,7 @@ export default {
       try {
         const auth = getAuth();
         await signOut(auth);
-        this.$router.push("/dashboard");
+        this.$router.push("/home");
       } catch (error) {
         console.error("Fehler beim Logout:", error);
       }
@@ -98,9 +95,8 @@ export default {
 }
 
 h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 1,8rem;
+  font-weight: bold;
   color: var(--bs-body-color);
 }
 

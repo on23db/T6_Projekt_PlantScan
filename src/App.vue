@@ -72,5 +72,6 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   transition: all 0.3s ease;
+  padding-bottom: 8vh;
 }
 </style>

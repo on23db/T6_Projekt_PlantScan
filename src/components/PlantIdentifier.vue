@@ -129,7 +129,7 @@ export default {
   justify-content: center;
   background: #91919151;
   width: auto;
-  height: 30vh;
+  height: 20vh;
   border-radius: 12px;
   border-style: dotted;
   cursor: pointer;

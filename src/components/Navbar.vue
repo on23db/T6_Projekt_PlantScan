@@ -1,7 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg">
     <div class="container-lg d-flex justify-content-between align-items-center">
-      <router-link to="/home" class="navbar-brand d-flex align-items-center">
+      <router-link
+        :to="isLoggedIn ? '/dashboard' : '/home'"
+        class="navbar-brand d-flex align-items-center"
+      >
         <img src="/src/assets/Logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top me-2" />
         PlantScan
       </router-link>
@@ -13,8 +16,8 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav" v-if="!isMobile">
         <div class="d-flex flex-column flex-lg-row align-items-center">
-          <!-- ThemeToggle Komponente -->
-          <ThemeToggle />
+          <!-- ThemeToggle Komponente nur anzeigen, wenn der User nicht eingeloggt ist -->
+          <ThemeToggle v-if="!isLoggedIn" />
 
           <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-lg-0">
             <!-- Login und Register Buttons nur anzeigen, wenn der User nicht eingeloggt ist -->
@@ -29,15 +32,17 @@
               </button>
             </router-link>
 
-            <!-- Profil und Logout Buttons nur anzeigen, wenn der User eingeloggt ist -->
+            <!-- Nur sichtbar wenn der User eingeloggt ist -->
+            <router-link v-if="isLoggedIn" to="/dashboard">
+              <button class="btn btn-success" type="button">
+                Dashboard
+              </button>
+            </router-link>
             <router-link v-if="isLoggedIn" to="/profile">
-              <button class="btn btn-outline-primary" type="button">
+              <button class="btn btn-outline-success" type="button">
                 Profil
               </button>
             </router-link>
-            <button v-if="isLoggedIn" class="btn btn-danger" @click="logout">
-              Abmelden
-            </button>
           </div>
         </div>
       </div>
@@ -47,44 +52,24 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import ThemeToggle from './ThemeToggle.vue';  // Importiere die ThemeToggle-Komponente
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import ThemeToggle from './ThemeToggle.vue';
 
-// Firebase Setup
 const auth = getAuth();
-
-// Überwache den Authentifizierungsstatus
 const isLoggedIn = ref(false);
-
-// Bildschirmgröße überwachen, um zu entscheiden, ob Mobile oder Desktop
 const isMobile = ref(false);
 
 onMounted(() => {
   onAuthStateChanged(auth, (user) => {
-    isLoggedIn.value = !!user; // Setze isLoggedIn basierend auf dem Benutzerstatus
+    isLoggedIn.value = !!user;
   });
 
-  // Prüfe Bildschirmgröße
   isMobile.value = window.innerWidth < 768;
-
-  // Optional: Event Listener für Resize-Event, um die Bildschirmgröße dynamisch zu aktualisieren
   window.addEventListener('resize', () => {
     isMobile.value = window.innerWidth < 768;
   });
 });
-
-// Logout Funktion
-const logout = async () => {
-  try {
-    await signOut(auth);
-    isLoggedIn.value = false; // Status zurücksetzen, wenn der User abgemeldet wird
-  } catch (error) {
-    console.error("Fehler beim Ausloggen:", error);
-  }
-};
 </script>
-
-
 
 <style scoped>
 nav {
@@ -139,7 +124,6 @@ button {
   transition: all 0.3s ease;
 }
 
-/* Dunkler Modus */
 .theme-switch:checked+label {
   background-color: var(--bs-gray-700);
 }

@@ -47,7 +47,7 @@ const routes = [
   },
   { 
     path: '/', 
-    redirect: '/loading' 
+    redirect: '/dashboard' 
   },
   {
     path: '/splash',
