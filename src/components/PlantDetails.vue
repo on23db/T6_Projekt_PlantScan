@@ -1,21 +1,23 @@
 <template>
   <div class="plant-details">
     <div v-if="plantData">
-      <h3 class="scientific-name">{{ plantData.species.scientificName }}</h3>
+      <!-- Häufiger Name (erstes Element aus commonNames) -->
+      <h3 class="common-name">{{ plantData.species.commonNames ? plantData.species.commonNames[0] : '❗ Kein häufiger Name gefunden.' }}</h3>
+
+      <!-- Weitere gängige Namen unterhalb des häufigen Namens -->
+      <div v-if="plantData.species.commonNames && plantData.species.commonNames.length > 1">
+        <p><strong>Trivialnamen:</strong> {{ plantData.species.commonNames.slice(1).join(', ') }}</p>
+      </div>
+
+      <!-- Wissenschaftlicher Name -->
       <p><strong>Wissenschaftlicher Name:</strong> {{ plantData.species.scientificName }}</p>
 
-      <div v-if="plantData.species.commonNames && plantData.species.commonNames.length">
-        <p><strong>Häufige Namen:</strong> {{ plantData.species.commonNames.join(', ') }}</p>
-      </div>
-      <div v-else>
-        <p>❗ Keine gängigen Namen gefunden.</p>
-      </div>
-
-      <!-- Weitere Taxonomische Daten -->
+      <!-- Familie -->
       <div v-if="plantData.species.family && plantData.species.family.scientificName">
         <p><strong>Familie:</strong> {{ plantData.species.family.scientificName }}</p>
       </div>
 
+      <!-- Gattung -->
       <div v-if="plantData.species.genus && plantData.species.genus.scientificName">
         <p><strong>Gattung:</strong> {{ plantData.species.genus.scientificName }}</p>
       </div>
@@ -27,9 +29,9 @@
         </p>
       </div>
 
-      <div v-else>
-        <p>❗ Keine Pflanzendaten verfügbar.</p>
-      </div>
+    </div>
+    <div v-else>
+      <p>❗ Keine Pflanzendaten verfügbar.</p>
     </div>
   </div>
 </template>
@@ -58,6 +60,12 @@ export default {
   border-radius: 10px;
   transition: all 0.3s ease; 
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.common-name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 .plant-details h3 {

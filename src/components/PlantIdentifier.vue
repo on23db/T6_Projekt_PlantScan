@@ -13,9 +13,16 @@
     <div v-if="isLoading" class="loading">🔍 Wird analysiert...</div>
     <div v-if="errorMessage" class="error">❌ {{ errorMessage }}</div>
 
+    <!-- Zeige Pflanzenbilder an, wenn PlantData vorhanden ist -->
+    <div v-if="plantData" class="plant-images">
+      <div v-for="(image, index) in plantData.images" :key="index" class="plant-image">
+        <img :src="image.url" alt="Pflanzenbild" />
+      </div>
+    </div>
+
     <plant-details v-if="plantData" :plantData="plantData" />
 
-    <!-- Popup für Benachrichtigung wird hier eingebunden -->
+    <!-- Popup für Benachrichtigung -->
     <plant-info-popup
       v-if="showPopup"
       :plantData="plantData"
@@ -32,7 +39,6 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '@/firebase' 
 
-
 export default {
   name: 'PlantIdentifier',
   components: {
@@ -45,81 +51,86 @@ export default {
       isLoading: false,
       plantData: null,
       errorMessage: null,
-      showPopup: false,  // Steuerung für das Popup
+      showPopup: false,
     };
   },
   methods: {
-  handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.previewImage = URL.createObjectURL(file);
-      this.identifyPlant(file);  // Sofortige Identifikation nach Upload
-    }
-  },
-
-  async identifyPlant(file) {
-    this.isLoading = true;
-    this.errorMessage = null;
-
-    const formData = new FormData();
-    formData.append('images', file);
-
-    try {
-      const response = await axios.post('https://my-api.plantnet.org/v2/identify/all', formData, {
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_PLANTNET_API_KEY}`,
-          'Content-Type': 'multipart/form-data',
-        },
-        params: {
-          lang: 'de',
-        }
-      });
-
-      this.plantData = response.data.results.length ? response.data.results[0] : null;
-
-      if (this.plantData) {
-        this.showPopup = true;
-        this.saveScanToFirestore(this.plantData); 
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.selectedFile = file;
+        this.previewImage = URL.createObjectURL(file);
+        this.identifyPlant(file);  // Sofortige Identifikation nach Upload
       }
+    },
 
-    } catch (error) {
-      console.error("Fehler bei der API-Anfrage:", error);
-      this.errorMessage = error.response
-        ? `Fehler: ${error.response.status} - ${error.response.data.message || 'Unbekannt'}`
-        : "Verbindungsfehler.";
-    } finally {
-      this.isLoading = false;
-    }
-  },
+    async identifyPlant(file) {
+      this.isLoading = true;
+      this.errorMessage = null;
 
-  async saveScanToFirestore(plantData) {
-    const currentUser = getAuth().currentUser;
-    if (!currentUser) {
-      console.warn("Kein Benutzer angemeldet, daher wird nichts gespeichert.");
-      return;
-    }
+      const formData = new FormData();
+      formData.append('images', file);
 
-    const userId = currentUser.uid;
-    const scan = {
-      name: plantData.species?.scientificNameWithoutAuthor || 'Unbekannt',
-      date: serverTimestamp(),
-      score: plantData.score || null,
-      imageUrl: plantData.images?.[0]?.url?.m || null
-    };
+      try {
+        const response = await axios.post('https://my-api.plantnet.org/v2/identify/all', formData, {
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_PLANTNET_API_KEY}`,
+            'Content-Type': 'multipart/form-data',
+          },
+          params: {
+            lang: 'de',
+          }
+        });
 
-    try {
-      await addDoc(collection(db, `users/${userId}/scans`), scan);
-      console.log("Pflanzenscan erfolgreich gespeichert.");
-    } catch (error) {
-      console.error("Fehler beim Speichern des Scans:", error);
-    }
-  },
+        this.plantData = response.data.results.length ? response.data.results[0] : null;
 
-  closePopup() {
-    this.showPopup = false;
+        if (this.plantData) {
+          this.showPopup = true;
+          this.saveScanToFirestore(this.plantData); 
+        }
+
+      } catch (error) {
+        console.error("Fehler bei der API-Anfrage:", error);
+        this.errorMessage = error.response
+          ? `Fehler: ${error.response.status} - ${error.response.data.message || 'Unbekannt'}`
+          : "Verbindungsfehler.";
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async saveScanToFirestore(plantData) {
+  const currentUser = getAuth().currentUser;
+  if (!currentUser) {
+    console.warn("Kein Benutzer angemeldet, daher wird nichts gespeichert.");
+    return;
   }
-} }
+
+  const userId = currentUser.uid;
+
+  const scan = {
+    nameCommon: plantData.species?.commonNames?.[0] || 'Unbekannt',
+    nameScientific: plantData.species?.scientificNameWithoutAuthor || 'Unbekannt',
+    date: serverTimestamp(),
+    score: plantData.score || null,
+    imageUrl: plantData.images?.[0]?.url?.m || null
+  };
+
+  try {
+    await addDoc(collection(db, `users/${userId}/scans`), scan);
+    console.log("Pflanzenscan erfolgreich mit common + scientific name gespeichert.");
+  } catch (error) {
+    console.error("Fehler beim Speichern des Scans:", error);
+  }
+}
+
+,
+
+    closePopup() {
+      this.showPopup = false;
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -175,5 +186,20 @@ export default {
   border: 1px solid #c0392b;
   padding: 1rem;
   border-radius: 8px;
+}
+
+.plant-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.plant-image img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 12px;
+  object-fit: cover;
 }
 </style>

@@ -8,17 +8,11 @@ import Hilfe from "./views/Hilfe.vue";
 import Kontakt from "./views/Kontakt.vue";
 import Datenschutz from "./views/Datenschutz.vue";
 import Überuns from "./views/Überuns.vue";
-import PlantList from './views/PlantList.vue';
 import Profile from './views/Profile.vue';
 import CameraCapture from '@/components/CameraCapture.vue';
 import Splash from './views/Splash.vue'; 
 
 const routes = [
-  {
-    path: "/plantlist",
-    name: "PlantList",
-    component: PlantList
-  },
   {
     path: '/dashboard',
     name: 'dashboard',
@@ -56,11 +50,9 @@ const routes = [
     beforeEnter: (to, from, next) => {
       // Überprüfen, ob die App im Standalone-Modus läuft
       if (window.matchMedia('(display-mode: standalone)').matches) {
-        // Wenn Standalone-Modus, dann zum Splashscreen
         next();
       } else {
-        // Wenn im Web, direkt zum Dashboard (oder eine andere Route)
-        next('/dashboard'); // Du kannst auch '/home' oder eine andere Route wählen
+        next('/dashboard');
       }
     }
   },
@@ -74,7 +66,6 @@ const routes = [
         // Wenn im Standalone-Modus, dann zur Dashboard-Seite weiterleiten (blockiert Zugriff auf Home)
         next('/dashboard');
       } else {
-        // Wenn nicht im Standalone-Modus, kann der Home-Bereich aufgerufen werden
         next();
       }
     }

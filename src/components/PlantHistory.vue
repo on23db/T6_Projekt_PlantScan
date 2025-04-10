@@ -10,10 +10,17 @@
       >
         <div class="card h-100 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title">{{ scan.name }}</h5>
+            <h5 class="card-title">{{ scan.nameCommon }}</h5>
+            <p><i>{{ scan.nameScientific }}</i></p>
             <p class="card-text">
               Gescannt am: {{ formatDate(scan.date) }}
             </p>
+
+            <!-- Bild der Pflanze anzeigen, wenn es vorhanden ist -->
+            <div v-if="scan.imageUrl" class="plant-image">
+              <img :src="scan.imageUrl" alt="Bild der Pflanze" class="img-fluid" />
+            </div>
+
             <a v-if="scan.gbifId" :href="'https://www.gbif.org/species/' + scan.gbifId" target="_blank" class="link">
               Mehr erfahren
             </a>
@@ -35,6 +42,7 @@
     <p>Melde dich an, um deine letzten Scans zu sehen.</p>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
@@ -139,7 +147,9 @@ const saveScansToIndexedDB = (userId, scans) => {
         userId: userId,
         name: scan.name,
         date: scan.date,
-        gbifId: scan.gbifId
+        gbifId: scan.gbifId,
+        imageUrl: scan.imageUrl,
+        commonNames: scan.commonNames
       })
     })
 
@@ -182,5 +192,15 @@ h2 {
 
 .btn-history:hover {
   background-color: darkorange;
+}
+
+.plant-image {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.plant-image img {
+  max-width: 100%;
+  height: auto;
 }
 </style>

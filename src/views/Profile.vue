@@ -109,7 +109,7 @@ h1 {
 }
 
 .profile-box {
-  background-color: var(--bs-card-bg); /* Hintergrundfarbe der Box */
+  background-color: var(--bs-card-bg); 
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
